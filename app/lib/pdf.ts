@@ -10,7 +10,7 @@ async function loadPdfJs() {
 
 const nearWhite = (rgb: number[]) => rgb.every((c) => c >= 0.8);
 
-/** Separates what a person sees from text drawn invisible, too small or nearly white, which only software reads. */
+/** Separates what a person sees from text drawn invisible, off the page, too small or nearly white, which only software reads. */
 export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
   const { getDocument, OPS } = await loadPdfJs();
   const doc = await getDocument({ data: bytes.slice(), useSystemFonts: true }).promise;
@@ -24,6 +24,9 @@ export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
     let size = 12;
     let scale = 1;
     let renderMode = 0;
+    let x = 0;
+    let y = 0;
+    const [left, bottom, right, top] = page.view;
     for (let i = 0; i < fnArray.length; i++) {
       const fn = fnArray[i];
       const args = argsArray[i];
@@ -39,11 +42,14 @@ export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
       } else if (fn === OPS.setFont) {
         size = args[1];
       } else if (fn === OPS.setTextMatrix) {
-        scale = Math.abs(args[0]?.[0] ?? args[0] ?? 1);
+        const matrix: number[] = Array.isArray(args[0]) || ArrayBuffer.isView(args[0]) ? Array.from(args[0] as ArrayLike<number>) : args;
+        scale = Math.abs(matrix[0] ?? 1);
+        x = matrix[4] ?? 0;
+        y = matrix[5] ?? 0;
       } else if (fn === OPS.showText) {
         const text = args[0].map((g: any) => g?.unicode ?? "").join("");
         if (!text.trim()) continue;
-        (renderMode === 3 || nearWhite(rgb) || Math.abs(size) * scale < 3 ? hidden : visible).push(text);
+        (renderMode === 3 || x < left || x >= right || y < bottom || y >= top || nearWhite(rgb) || Math.abs(size) * scale < 3 ? hidden : visible).push(text);
       }
     }
   }

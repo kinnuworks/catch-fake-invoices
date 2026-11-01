@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { WithAddresses } from "./address";
 import type { InvoiceRead } from "../lib/readInvoice";
 
-type Review = InvoiceRead & { doubts: string[]; aiRead: "ok" | "off" | "failed" | "limited" | "unavailable" };
+type Review = InvoiceRead & { doubts: string[]; notes?: string[]; aiRead: "ok" | "off" | "failed" | "limited" | "unavailable" };
 
 const KNOWN = "0x18Eb2D9DDfBBE58F66ee7f19899E783d3FA7E840";
 const SAMPLES = [
@@ -125,8 +125,14 @@ export function Upload() {
                     )}
                     {review.doubts.length > 0 && (
                       <div className="detail">
-                        Also worth checking:
+                        The AI also flagged:
                         <ul>{review.doubts.map((d) => <li key={d}><WithAddresses text={d} /></li>)}</ul>
+                      </div>
+                    )}
+                    {review.notes && review.notes.length > 0 && (
+                      <div className="detail">
+                        Also worth checking:
+                        <ul>{review.notes.map((d) => <li key={d}><WithAddresses text={d} /></li>)}</ul>
                       </div>
                     )}
                     {!review.warnings.length && !payTo && <p className="detail">Add the wallet you've paid before, so a changed wallet can be caught.</p>}

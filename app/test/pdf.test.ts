@@ -32,4 +32,13 @@ describe("reviewInvoice", () => {
     page.drawText("Pay here: 0x4B5Bf9018E0c82Cb4cB2EB0E025E5F3BbFF890fa", { x: 20, y: 600, size: 16, font });
     expect(kinds(await reviewInvoice(await pdf.save(), { payTo: KNOWN }))).toEqual(expect.arrayContaining(["many-wallets", "changed-wallet"]));
   });
+
+  it("treats text placed off the page as hidden", async () => {
+    const pdf = await PDFDocument.create();
+    const font = await pdf.embedFont(StandardFonts.Helvetica);
+    const page = pdf.addPage([595, 842]);
+    page.drawText(`Invoice number: INV-1 Total: $5 Pay to ${KNOWN}`, { x: 20, y: 700, size: 8, font });
+    page.drawText("Nothing to see here", { x: 700, y: 400, size: 9, font });
+    expect(kinds(await reviewInvoice(await pdf.save(), { payTo: KNOWN }))).toContain("hidden-text");
+  });
 });

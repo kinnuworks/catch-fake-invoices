@@ -6,6 +6,7 @@ import { SCENARIOS } from "../lib/demo-labels";
 import runs from "../data/runs.json";
 import { WithAddresses } from "./address";
 import { Logo } from "./logo";
+import { Challenge } from "./challenge";
 import { Upload } from "./upload";
 
 type Run = { label: string; status: string; attributionVerified: boolean; network: string; txUrl: string; ledgerUrl?: string };
@@ -14,6 +15,16 @@ export default function Home() {
   const [scenario, setScenario] = useState<Scenario>("wallet");
   const [result, setResult] = useState<DemoResult | null>(null);
   const [error, setError] = useState("");
+  const [statuses, setStatuses] = useState<Partial<Record<Scenario, boolean>>>({});
+
+  useEffect(() => {
+    (Object.keys(SCENARIOS) as Scenario[]).forEach((key) => {
+      fetch("/api/check", { method: "POST", body: JSON.stringify({ scenario: key }) })
+        .then((r) => r.json())
+        .then((r: DemoResult) => setStatuses((s) => ({ ...s, [key]: r.pass })))
+        .catch(() => undefined);
+    });
+  }, []);
 
   useEffect(() => {
     setResult(null);
@@ -42,7 +53,8 @@ export default function Home() {
             <a href="#try">Demo</a>
             <a href="#check">Check a PDF</a>
             <a href="#how">How it works</a>
-            <a href="#faq">FAQ</a>
+            <a href="#beat">Beat it</a>
+            <a href="/proof">Proof</a>
           </div>
           <a className="btn btn-candy btn-sm" href="#try">Try it</a>
         </div>
@@ -64,7 +76,8 @@ export default function Home() {
                   <div className="rows">
                     {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
                       <button key={key} className={key === "clean" ? "honest" : undefined} onClick={() => setScenario(key)} aria-pressed={scenario === key}>
-                        {SCENARIOS[key]}
+                        <span className="row-label">{SCENARIOS[key]}</span>
+                        {statuses[key] !== undefined && <span className={`row-status ${statuses[key] ? "ok" : "bad"}`}>{statuses[key] ? "Ready" : "Stopped"}</span>}
                       </button>
                     ))}
                   </div>
@@ -129,7 +142,9 @@ export default function Home() {
 
       <div id="check"><Upload /></div>
 
-      <section className="section" id="how">
+      <Challenge />
+
+      <section className="section section--alt" id="how">
         <div className="container">
           <div className="section-head">
             <span className="eyebrow">How it works</span>
@@ -144,7 +159,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section--alt" id="faq">
+      <section className="section" id="faq">
         <div className="container">
           <div className="section-head"><h2>Questions.</h2></div>
           <div className="faq">

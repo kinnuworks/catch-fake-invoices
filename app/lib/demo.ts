@@ -21,6 +21,8 @@ const impostor = privateKeyToAccount(generatePrivateKey());
 const supplierWallet = privateKeyToAccount(generatePrivateKey()).address;
 const attackerWallet = privateKeyToAccount(generatePrivateKey()).address;
 
+export const demoSupplier = { account: supplierAgent, wallet: supplierWallet };
+
 const suppliers: Supplier[] = [{ name: "Meera Design Studio", signer: supplierAgent.address, knownPayTo: supplierWallet }];
 const orders: Order[] = [
   { orderId: "PO-1042", supplier: supplierAgent.address, amountUsdCents: 45_000n, description: "Logo and brand kit" },

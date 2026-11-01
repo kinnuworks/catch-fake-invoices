@@ -13,12 +13,14 @@ const INSTRUCTION = /(ignore|disregard|override|bypass|skip)\b.{0,40}\b(check|in
 const lineValue = (text: string, label: RegExp) => text.match(label)?.[1]?.trim() ?? null;
 
 export function parseInvoiceText(text: string) {
-  const wallets = text.match(/0x[a-fA-F0-9]{40}/g) ?? [];
-  const totals = [...text.matchAll(/(?:total|amount due|balance due|amount)[^\d\n]{0,20}\$?\s?([\d,]+(?:\.\d{1,2})?)/gi)]
+  // A long wallet can wrap across two lines, so join hex fragments first.
+  const unwrapped = text.replace(/(0x[a-fA-F0-9]{10,39})\s*\n\s*([a-fA-F0-9]{1,30})(?![a-zA-Z0-9])/g, "$1$2");
+  const wallets = unwrapped.match(/0x[a-fA-F0-9]{40}/g) ?? [];
+  const totals = [...text.matchAll(/(?:total|amount due|balance due|amount)[^\d]{0,20}\$?\s?([\d,]+(?:\.\d{1,2})?)/gi)]
     .map((m) => Number(m[1].replace(/,/g, "")))
     .filter((n) => Number.isFinite(n) && n > 0);
   return {
-    invoiceNumber: lineValue(text, /invoice[ \t]*(?:number|no\.?|#)?[ \t]*[:#]?[ \t]*((?=[A-Z-]*\d)[A-Z0-9][A-Z0-9-]{2,})/i),
+    invoiceNumber: lineValue(text, /(?:invoice|inv)[ \t]*(?:number|no\.?|#)?[ \t]*[:#]?\s*((?=[A-Z-/]*\d)[A-Z0-9][A-Z0-9-/]{2,})/i),
     supplierName: lineValue(text, /(?:from|supplier|vendor|bill from)\s*:\s*(.+)/i),
     payTo: wallets[0] ?? null,
     wallets: [...new Set(wallets.map((w) => w.toLowerCase()))],

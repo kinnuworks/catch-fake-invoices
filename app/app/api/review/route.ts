@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
-import { createLimiter } from "../../../lib/limit";
-import { readInvoicePdf } from "../../../lib/reader";
+import { allowAiRead } from "../../../lib/aiLimit";
+import { addAiRead } from "../../../lib/fullReview";
 import { reviewInvoice } from "../../../lib/readInvoice";
 
 const MAX_BYTES = 5 * 1024 * 1024;
-
-// Each AI read costs money, so visitors and each server instance get a limited number.
-const perVisitor = createLimiter(6, 10 * 60_000);
-const perInstance = createLimiter(60, 60 * 60_000);
 
 export async function POST(request: Request) {
   const form = await request.formData().catch(() => null);
@@ -36,28 +32,11 @@ export async function POST(request: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json({ ...review, doubts: [], aiRead: "unavailable" });
   }
-  const visitor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (!perVisitor(visitor) || !perInstance("all")) {
+  if (!allowAiRead(request)) {
     return NextResponse.json({ ...review, doubts: [], aiRead: "limited" });
   }
   try {
-    const ai = await readInvoicePdf(Buffer.from(bytes).toString("base64"));
-    const warnings = [...review.warnings];
-    if (payTo && ai.payTo && ai.payTo.toLowerCase() !== payTo.toLowerCase() && !warnings.some((w) => w.kind === "changed-wallet")) {
-      warnings.push({ kind: "changed-wallet", message: `Payment wallet changed. You expected ${payTo}. This invoice asks for ${ai.payTo}.` });
-    }
-    if (amount !== undefined && ai.amountUsdCents !== Math.round(amount * 100) && !warnings.some((w) => w.kind === "wrong-amount")) {
-      warnings.push({ kind: "wrong-amount", message: `You agreed ${amount}, this asks for ${ai.amountUsdCents / 100}.` });
-    }
-    return NextResponse.json({
-      invoiceNumber: ai.invoiceNumber,
-      supplierName: ai.supplierName,
-      payTo: ai.payTo,
-      amount: ai.amountUsdCents / 100,
-      warnings: warnings.filter((w) => !(ai.payTo && w.kind === "no-wallet") && !(ai.amountUsdCents && w.kind === "no-amount")),
-      doubts: ai.doubts,
-      aiRead: "ok",
-    });
+    return NextResponse.json({ ...(await addAiRead(review, bytes, { payTo, amount })), aiRead: "ok" });
   } catch (error) {
     console.error("AI read failed:", error instanceof Error ? error.message : error);
     return NextResponse.json({ ...review, doubts: [], aiRead: "failed" });
