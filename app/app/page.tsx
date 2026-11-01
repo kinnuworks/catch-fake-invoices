@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { DemoResult, Scenario } from "../lib/demo";
 import { SCENARIOS } from "../lib/demo-labels";
 import runs from "../data/runs.json";
+import { WithAddresses } from "./address";
 import { Logo } from "./logo";
 import { Upload } from "./upload";
 
@@ -49,8 +50,9 @@ export default function Home() {
 
       <header className="hero" id="top">
         <div className="container">
+          <span className="badge badge--dot">Built for HSK Chain and HSP, HashKey's payment gateway</span>
           <h1>Catch <span className="hl">fake invoices</span> before paying.</h1>
-          <p className="lead">InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves. Try to fool it.</p>
+          <p className="lead">InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves. It's for businesses that let agents pay their suppliers. Try to fool it.</p>
           <div className="trust"><span>No wallet</span><span>No signup</span><span>Sample data, no money moves</span></div>
 
           <div className="hero__visual stage stage--hero" id="try">
@@ -78,7 +80,7 @@ export default function Home() {
                         {result.pass ? (
                           <p>Signature, wallet, order and history all match. Nothing is paid until you approve it.</p>
                         ) : (
-                          <ul>{result.findings.map((f) => <li key={f.reason}>{f.message}</li>)}</ul>
+                          <ul>{result.findings.map((f) => <li key={f.reason}><WithAddresses text={f.message} /></li>)}</ul>
                         )}
                       </div>
                       <div className="sheet">
@@ -89,7 +91,7 @@ export default function Home() {
                               <tr key={label} className={changed ? "changed" : undefined}>
                                 <th>{label}</th>
                                 <td className={label === "Pay to" ? "mono" : undefined}>
-                                  {changed ? <span className="mark">{value} (changed)</span> : value}
+                                  {changed ? <span className="mark"><WithAddresses text={value} /> (changed)</span> : <WithAddresses text={value} />}
                                 </td>
                               </tr>
                             ))}
@@ -150,7 +152,7 @@ export default function Home() {
             <details><summary>Does this page move real money?</summary><p>No. The demo uses sample invoices and throwaway keys.</p></details>
             <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract on HSK Chain is designed to keep a public record of each decision.</p></details>
             <details><summary>Is my PDF saved?</summary><p>No. It's read to run the check and then discarded.</p></details>
-            <details><summary>What can it miss?</summary><p>This hosted page reads PDFs with fixed rules, which can miss unusual layouts and some ways of hiding text. Treat "no problems found" as a result of these checks, and keep checking large payments yourself.</p></details>
+            <details><summary>What can it miss?</summary><p>Fixed rules can miss unusual layouts and some ways of hiding text. The AI read catches more, and it can still be wrong. Treat "no problems found" as a result of these checks, and keep checking large payments yourself.</p></details>
           </div>
         </div>
       </section>

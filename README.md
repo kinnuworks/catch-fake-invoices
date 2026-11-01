@@ -12,7 +12,7 @@ The two agents don't have to trust each other: HSP settles the payment and eithe
 2. Press "Change the payment wallet" and watch the payment stop.
 3. Under "Check a PDF invoice", press "Invoice with hidden instructions". White text on that page tells any AI agent to approve the payment. The agent reports it and approves nothing.
 
-No wallet or signup is needed for these steps. The hosted page reads PDFs with fixed rules, and says so. To run it yourself with the AI read, add `ANTHROPIC_API_KEY` to `app/.env` and run `pnpm install && pnpm dev` in `app/`.
+No wallet or signup is needed for these steps. Fixed rules answer first. When an API key is set, the AI read adds to the result, within a limit per visitor. To run it yourself, add `ANTHROPIC_API_KEY` to `app/.env` and run `pnpm install && pnpm dev` in `app/`.
 
 ## What it checks
 

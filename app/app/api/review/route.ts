@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
+import { createLimiter } from "../../../lib/limit";
 import { readInvoicePdf } from "../../../lib/reader";
 import { reviewInvoice } from "../../../lib/readInvoice";
 
 const MAX_BYTES = 5 * 1024 * 1024;
+
+// Each AI read costs money, so visitors and each server instance get a limited number.
+const perVisitor = createLimiter(6, 10 * 60_000);
+const perInstance = createLimiter(60, 60 * 60_000);
 
 export async function POST(request: Request) {
   const form = await request.formData().catch(() => null);
@@ -25,8 +30,15 @@ export async function POST(request: Request) {
 
   // The model reads the rendered page, so it catches what the rules can't. It can raise concerns
   // and correct fields, but it can never clear a warning or approve anything.
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (form?.get("ai") !== "1") {
     return NextResponse.json({ ...review, doubts: [], aiRead: "off" });
+  }
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ ...review, doubts: [], aiRead: "unavailable" });
+  }
+  const visitor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  if (!perVisitor(visitor) || !perInstance("all")) {
+    return NextResponse.json({ ...review, doubts: [], aiRead: "limited" });
   }
   try {
     const ai = await readInvoicePdf(Buffer.from(bytes).toString("base64"));
