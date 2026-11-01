@@ -18,7 +18,8 @@ export async function POST(request: Request) {
   let review;
   try {
     review = await reviewInvoice(bytes, { payTo, amount: Number.isFinite(amount) ? amount : undefined });
-  } catch {
+  } catch (error) {
+    console.error("PDF read failed:", error instanceof Error ? error.message : error);
     return NextResponse.json({ error: "That file couldn't be read as a PDF." }, { status: 422 });
   }
 

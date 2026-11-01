@@ -1,11 +1,18 @@
-import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
-
 export type PdfRead = { visibleText: string; hiddenText: string[]; pages: number };
+
+// pdf.js expects these browser classes when it loads. We only read text and never draw, so empty ones do.
+async function loadPdfJs() {
+  const g = globalThis as Record<string, unknown>;
+  for (const name of ["DOMMatrix", "ImageData", "Path2D"]) g[name] ??= class {};
+  g.pdfjsWorker ??= await import("pdfjs-dist/legacy/build/pdf.worker.mjs");
+  return import("pdfjs-dist/legacy/build/pdf.mjs");
+}
 
 const nearWhite = (rgb: number[]) => rgb.every((c) => c >= 0.8);
 
 /** Separates what a person sees from text drawn invisible, too small or nearly white, which only software reads. */
 export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
+  const { getDocument, OPS } = await loadPdfJs();
   const doc = await getDocument({ data: bytes.slice(), useSystemFonts: true }).promise;
   const visible: string[] = [];
   const hidden: string[] = [];
