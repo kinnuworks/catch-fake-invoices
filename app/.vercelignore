@@ -3,3 +3,4 @@
 data/run-log.jsonl
 .next
 node_modules
+pnpm-lock.yaml
