@@ -108,9 +108,8 @@ button:disabled { opacity: 0.5; cursor: default; }
   text-transform: uppercase;
   margin: 0 0 4px;
 }
-.sheet .who { color: var(--ink-soft); margin: 10px 0 4px; }
+.sheet .who { color: var(--ink-soft); margin: 6px 0 2px; }
 .next { margin: 0 0 8px; max-width: 44em; }
-button.honest { margin-left: 12px; }
 
 /* The audit line */
 .mark { position: relative; display: inline; color: var(--stop); font-weight: 600; animation: to-red 420ms 180ms both; }

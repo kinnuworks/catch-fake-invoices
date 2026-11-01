@@ -35,7 +35,7 @@ export default function Home() {
     <main>
       <div className="wrap">
         <h1>Catch fake invoices before paying</h1>
-        <p className="lede">A supplier's agent sends an invoice. Your agent checks it before any money moves, and this page shows what your agent decides. In this example, someone changed the wallet. Try other ways to fool it:</p>
+        <p className="lede">A supplier's agent sends an invoice. Your agent checks it before any money moves. In this example, someone changed the wallet. Try other ways to fool it:</p>
 
         <div className="controls">
           {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
