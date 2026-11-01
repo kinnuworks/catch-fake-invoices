@@ -100,6 +100,18 @@ button:disabled { opacity: 0.5; cursor: default; }
 }
 .sheet td.mono { font-family: var(--font-mono), monospace; font-size: clamp(14px, 1.9vw, 18px); }
 
+.who {
+  display: block;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.sheet .who { color: var(--ink-soft); margin: 10px 0 4px; }
+.next { margin: 0 0 8px; max-width: 44em; }
+button.honest { margin-left: 12px; }
+
 /* The audit line */
 .mark { position: relative; display: inline; color: var(--stop); font-weight: 600; animation: to-red 420ms 180ms both; }
 tr.changed td { position: relative; }

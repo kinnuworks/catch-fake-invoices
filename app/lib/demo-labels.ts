@@ -4,5 +4,5 @@ export const SCENARIOS = {
   edited: "Edit it after signing",
   forged: "Forge the supplier",
   duplicate: "Send it a second time",
-  clean: "Correct invoice",
+  clean: "Send the real invoice",
 } as const;

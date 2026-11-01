@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const ai = await readInvoicePdf(Buffer.from(bytes).toString("base64"));
     const warnings = [...review.warnings];
     if (payTo && ai.payTo && ai.payTo.toLowerCase() !== payTo.toLowerCase() && !warnings.some((w) => w.kind === "changed-wallet")) {
-      warnings.push({ kind: "changed-wallet", message: `Payment wallet changed: you expected ${payTo}, this asks for ${ai.payTo}.` });
+      warnings.push({ kind: "changed-wallet", message: `Payment wallet changed. You expected ${payTo}. This invoice asks for ${ai.payTo}.` });
     }
     if (amount !== undefined && ai.amountUsdCents !== Math.round(amount * 100) && !warnings.some((w) => w.kind === "wrong-amount")) {
       warnings.push({ kind: "wrong-amount", message: `You agreed ${amount}, this asks for ${ai.amountUsdCents / 100}.` });

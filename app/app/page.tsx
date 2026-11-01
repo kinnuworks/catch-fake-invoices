@@ -35,11 +35,11 @@ export default function Home() {
     <main>
       <div className="wrap">
         <h1>Catch fake invoices before paying</h1>
-        <p className="lede">A supplier's agent sends an invoice. Your agent checks it before any money moves. In this example, someone changed the wallet. Try other ways to fool it:</p>
+        <p className="lede">A supplier's agent sends an invoice. Your agent checks it before any money moves, and this page shows what your agent decides. In this example, someone changed the wallet. Try other ways to fool it:</p>
 
         <div className="controls">
           {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
-            <button key={key} onClick={() => setScenario(key)} aria-pressed={scenario === key}>
+            <button key={key} className={key === "clean" ? "honest" : undefined} onClick={() => setScenario(key)} aria-pressed={scenario === key}>
               {SCENARIOS[key]}
             </button>
           ))}
@@ -53,6 +53,7 @@ export default function Home() {
         <div key={result.scenario}>
           <div className={`band ${result.pass ? "clear" : "stop"}`} role="status">
             <div className="wrap">
+              <span className="who">Your agent's decision</span>
               <strong>{result.pass ? "Ready for your approval" : "Payment stopped"}</strong>
               {result.pass ? (
                 <p>Signature, wallet, order and history all match. Nothing is paid until you approve it.</p>
@@ -65,6 +66,7 @@ export default function Home() {
           </div>
           <div className="wrap">
             <div className="sheet">
+              <p className="who">Invoice from the supplier's agent</p>
               <table>
                 <tbody>
                   {rows.map(([label, value, changed]) => (
@@ -78,6 +80,7 @@ export default function Home() {
                 </tbody>
               </table>
             </div>
+            <p className="next">If you approve a clean invoice, your agent pays it through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.</p>
             <p className="note">This demo uses a sample invoice and throwaway keys, and no money moves. The checks are the real ones.</p>
           </div>
         </div>

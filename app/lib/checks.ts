@@ -54,7 +54,7 @@ export async function checkInvoice(
   }
 
   if (supplier && !isAddressEqual(invoice.payTo, supplier.knownPayTo)) {
-    add("CHANGED_WALLET", `Payment wallet changed: you have paid ${supplier.name} at ${supplier.knownPayTo}, this asks for ${invoice.payTo}.`);
+    add("CHANGED_WALLET", `Payment wallet changed. ${supplier.name}'s usual wallet is ${supplier.knownPayTo}. This invoice asks for ${invoice.payTo}.`);
   }
 
   const order = orders.find((o) => o.orderId === invoice.orderId);

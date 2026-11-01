@@ -1,8 +1,8 @@
 # Catch fake invoices before paying
 
-A supplier's agent sends a signed invoice, and your agent checks it before any money moves. If you approve, the invoice is paid through HSP, and the supplier's agent confirms the payment with the gateway before it delivers.
+A supplier's agent sends a signed invoice, and your agent checks it before any money moves. If you approve, your agent pays through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.
 
-HSP is HashKey's payment gateway. Your agent needs it to settle what it has checked, and the supplier's agent needs it to confirm for itself that the money is on-chain and sent to its wallet. A small contract on HSK Chain keeps a public record of each decision, so anyone can see why an invoice was paid or stopped.
+The two agents don't have to trust each other: HSP settles the payment and either side can check it. A small contract on HSK Chain keeps a public record of each decision, so anyone can see why an invoice was paid or stopped.
 
 ## Try it in 30 seconds
 

@@ -80,6 +80,7 @@ export function Upload() {
       {review && (
         <div className="result" ref={resultRef}>
           <div className={`band ${stop ? "stop" : "clear"}`} role="status">
+            <span className="who">Your agent's decision</span>
             <strong>{stop ? "Don't pay this yet" : "No problems found in these checks"}</strong>
             {review.warnings.length > 0 && (
               <ul>

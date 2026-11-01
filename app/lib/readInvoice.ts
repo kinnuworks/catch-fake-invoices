@@ -45,7 +45,7 @@ export async function reviewInvoice(
   if (fields.amount === null) warnings.push({ kind: "no-amount", message: "No total found on this invoice." });
   const strange = fields.wallets.find((w) => w !== expected.payTo?.toLowerCase());
   if (expected.payTo && strange) {
-    warnings.push({ kind: "changed-wallet", message: `Payment wallet changed: you expected ${expected.payTo}, this asks for ${strange}.` });
+    warnings.push({ kind: "changed-wallet", message: `Payment wallet changed. You expected ${expected.payTo}. This invoice asks for ${strange}.` });
   }
   if (expected.amount !== undefined && fields.amount !== null && expected.amount !== fields.amount) {
     warnings.push({ kind: "wrong-amount", message: `You agreed ${expected.amount}, this asks for ${fields.amount}.` });
