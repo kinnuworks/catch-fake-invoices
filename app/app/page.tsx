@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { DemoResult, Scenario } from "../lib/demo";
 import { SCENARIOS } from "../lib/demo-labels";
 import runs from "../data/runs.json";
+import { Upload } from "./upload";
 
 type Run = { label: string; status: string; attributionVerified: boolean; network: string; txUrl: string; ledgerUrl?: string };
 
@@ -73,6 +74,8 @@ export default function Home() {
           <p style={{ fontSize: 13 }}>This demo uses a sample invoice and throwaway keys. The checks are the real ones.</p>
         </>
       )}
+
+      <Upload />
 
       {(runs as Run[]).length > 0 && (
         <section>

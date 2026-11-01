@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { payOrder, supplierShouldDeliver, type Approval } from "../lib/flow";
+import { checkFinal, payOrder, supplierShouldDeliver, type Approval } from "../lib/flow";
 
 // A stand-in for tests only. Real payments are recorded separately from the live gateway.
 const standIn = (statuses: string[], attributed = true) => {
@@ -53,5 +53,17 @@ describe("supplierShouldDeliver", () => {
     expect(supplierShouldDeliver(ok, "0xAa", "0xBb")).toBe(false);
     expect(supplierShouldDeliver({ ...ok, attributionVerified: false }, "0xAa", "0xAa")).toBe(false);
     expect(supplierShouldDeliver({ ...ok, outcome: "pending" }, "0xAa", "0xAa")).toBe(false);
+  });
+});
+
+describe("checkFinal", () => {
+  const safe = { flowId: "f", paymentRequestId: "p", outcome: "payment-safe" as const, attributionVerified: true, raw: null };
+  it("moves to finalized when the gateway says so", async () => {
+    const { call } = standIn(["payment-finalized"]);
+    expect((await checkFinal(call, safe, "Kinnu")).outcome).toBe("payment-finalized");
+  });
+  it("keeps safe, never final, if the gateway stops answering", async () => {
+    const call = async () => { throw new Error("gone"); };
+    expect((await checkFinal(call, safe, "Kinnu")).outcome).toBe("payment-safe");
   });
 });

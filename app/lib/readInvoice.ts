@@ -1,0 +1,52 @@
+import { readPdf } from "./pdf";
+
+export type InvoiceRead = {
+  invoiceNumber: string | null;
+  supplierName: string | null;
+  payTo: string | null;
+  amount: number | null;
+  warnings: { kind: "hidden-text" | "instruction" | "changed-wallet" | "wrong-amount" | "no-wallet" | "no-amount"; message: string }[];
+};
+
+const INSTRUCTION = /(ignore|disregard|override|bypass|skip)\b.{0,40}\b(check|instruction|rule|polic|verification|previous)|(approve|pay)\b.{0,40}\b(immediately|without|automatically)|\b(you are|as) an? (ai|agent|assistant)\b|system prompt/i;
+
+const lineValue = (text: string, label: RegExp) => text.match(label)?.[1]?.trim() ?? null;
+
+export function parseInvoiceText(text: string) {
+  const wallets = text.match(/0x[a-fA-F0-9]{40}/g) ?? [];
+  const totals = [...text.matchAll(/(?:total|amount due|balance due|amount)[^\d\n]{0,20}\$?\s?([\d,]+(?:\.\d{1,2})?)/gi)]
+    .map((m) => Number(m[1].replace(/,/g, "")))
+    .filter((n) => Number.isFinite(n) && n > 0);
+  return {
+    invoiceNumber: lineValue(text, /invoice[ \t]*(?:number|no\.?|#)?[ \t]*[:#]?[ \t]*((?=[A-Z-]*\d)[A-Z0-9][A-Z0-9-]{2,})/i),
+    supplierName: lineValue(text, /(?:from|supplier|vendor|bill from)\s*:\s*(.+)/i),
+    payTo: wallets[0] ?? null,
+    amount: totals.length ? Math.max(...totals) : null,
+  };
+}
+
+/** Finds problems in an uploaded invoice. It reports only; a person still decides. */
+export async function reviewInvoice(
+  bytes: Uint8Array,
+  expected: { payTo?: string; amount?: number } = {},
+): Promise<InvoiceRead> {
+  const { visibleText, hiddenText } = await readPdf(bytes);
+  const fields = parseInvoiceText(visibleText);
+  const warnings: InvoiceRead["warnings"] = [];
+
+  if (hiddenText.length) {
+    warnings.push({ kind: "hidden-text", message: `Hidden text a person can't see: "${hiddenText.join(" ").slice(0, 300)}"` });
+  }
+  if (INSTRUCTION.test([visibleText, ...hiddenText].join(" "))) {
+    warnings.push({ kind: "instruction", message: "This invoice contains instructions aimed at software. They were ignored, and only you can approve a payment." });
+  }
+  if (!fields.payTo) warnings.push({ kind: "no-wallet", message: "No wallet address found on this invoice." });
+  if (fields.amount === null) warnings.push({ kind: "no-amount", message: "No total found on this invoice." });
+  if (expected.payTo && fields.payTo && expected.payTo.toLowerCase() !== fields.payTo.toLowerCase()) {
+    warnings.push({ kind: "changed-wallet", message: `Payment wallet changed: you expected ${expected.payTo}, this asks for ${fields.payTo}.` });
+  }
+  if (expected.amount !== undefined && fields.amount !== null && expected.amount !== fields.amount) {
+    warnings.push({ kind: "wrong-amount", message: `You agreed ${expected.amount}, this asks for ${fields.amount}.` });
+  }
+  return { ...fields, warnings };
+}

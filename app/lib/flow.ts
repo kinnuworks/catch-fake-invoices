@@ -86,3 +86,13 @@ export function supplierShouldDeliver(result: PayResult, expectedPayTo: string, 
   const onChain = result.outcome === "payment-safe" || result.outcome === "payment-finalized";
   return onChain && result.attributionVerified && !!paidTo && paidTo.toLowerCase() === expectedPayTo.toLowerCase();
 }
+
+/** After payment-safe, asks again later for final confirmation. Keeps the safe result if the gateway has no newer answer. */
+export async function checkFinal(call: Call, safe: PayResult, merchantName: string): Promise<PayResult> {
+  try {
+    const later = await pollPayment(call, safe.flowId, safe.paymentRequestId, merchantName, 0, 1);
+    return later.outcome === "pending" ? safe : later;
+  } catch {
+    return safe;
+  }
+}
