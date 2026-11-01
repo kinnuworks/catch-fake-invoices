@@ -59,7 +59,7 @@ export function Upload() {
     <section className="pdf">
       <h2>Check a PDF invoice</h2>
       <p>Try a sample, or upload your own. It isn't saved.</p>
-      <div className="controls" style={{ marginBottom: 20 }}>
+      <div className="controls" style={{ marginBottom: 16 }}>
         {SAMPLES.map(([name, label]) => <button key={name} disabled={busy} onClick={() => sample(name)}>{label}</button>)}
       </div>
       <div className="fields">

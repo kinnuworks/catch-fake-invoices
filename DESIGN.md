@@ -1,63 +1,66 @@
-# The Audit Sheet
+# The Audit Sheet, dark
 
-The invoice is real paperwork on a calm page. When something is wrong, a red auditor's line draws under the changed field, so the evidence stays readable and a full-width band says so.
+A quiet, dark app window with the invoice inside it. Everything stays muted, so a red verdict is the loudest thing on screen.
 
-Signature: the audit line. It only appears on a field that changed, so the mark always points at the evidence. For a PDF, hidden text is shown in red on its own sheet.
+Signature: the audit line. A red line draws under the field that changed, so the mark always points at the evidence. For a PDF, hidden text appears in red on its own panel.
 
 ## Reference map
 
 | Reference | Job | What changed |
 | --- | --- | --- |
-| Kelp | Document panel and serif voice | Square paper with a hard edge, a cooler page and no curved section |
-| Control | Red rules on a document | One animated line that means something, in place of a decorative grid |
-| Decide AI | Huge full-width band | Holds a verdict, not a wordmark, and uses red or green on a calm page |
-| Ramp | One accent at a time, tidy data rows | The accent is earned by the verdict, and buttons stay ink |
+| Linear | Near-black surfaces, hairlines, tight type, mono labels, white-into-grey sentence | Bluer black, one verdict colour, and our own layout and content |
+
+Linear's logo, text and imagery are not used.
 
 ## Colour
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--page` | `#E4E9EC` | Page |
-| `--paper` | `#FBFAF6` | Invoice sheet |
-| `--ink` | `#14233A` | Text, buttons |
-| `--ink-soft` | `#4E5B6C` | Secondary text |
-| `--rule` | `#C9D1D7` | Hairlines on paper and page |
-| `--stop` | `#C4231C` | Stopped band, audit line, changed values |
-| `--clear` | `#14704A` | Ready band |
+| `--page` | `#0A0C10` | Page |
+| `--panel` | `#12151B` | Window and panels |
+| `--raised` | `#1A1E26` | Selected row, inputs |
+| `--line` | `#262B34` | Hairlines |
+| `--text` | `#F4F5F7` | Primary text |
+| `--soft` | `#9299A6` | Secondary text and mono labels |
+| `--stop` | `#C92A2F` | Stopped panel fill |
+| `--stop-text` | `#FF6B6E` | Changed values, audit line, hidden text |
+| `--clear` | `#157A52` | Ready panel fill |
 
-Red and green only appear on results. White on `--stop` is about 5.8:1 and on `--clear` about 6.1:1.
+Red and green only appear on results. Soft text on the panel is about 6.3:1, stop text on the panel about 6.6:1, and white on the stop fill about 5.3:1.
 
 ## Type
 
-- Display and verdict: Source Serif 4, weight 600. Headline `clamp(36px, 5vw, 56px)`, verdict `clamp(44px, 7.5vw, 88px)`.
-- Interface: Instrument Sans, 16 to 18px.
-- Wallets, invoice numbers and labels: JetBrains Mono. Labels 12px uppercase with 0.08em tracking.
+- Inter, weight 510 for headings and 400 for text, with tight tracking on large sizes.
+- Headline `clamp(30px, 4vw, 48px)`, tracking -0.022em. The second half of the opening sentence is `--soft`.
+- Verdict `clamp(40px, 6.4vw, 76px)`, weight 600, tracking -0.03em.
+- JetBrains Mono for wallets, labels and invoice numbers. Labels 11px uppercase with 0.08em tracking.
 
 ## Spacing and shape
 
-Base unit 8px. Page gutter 16px on phones, 32px above 720px, content width 960px. Paper and bands have square corners. Buttons have a 2px radius. The sheet has a 1px rule and a soft offset shadow, `0 18px 40px -24px rgba(20,35,58,.45)`.
+Base unit 8px. Gutter 16px on phones and 32px above 720px. Content width 1120px. Window radius 12px, inner panels 8px, buttons 6px, all with 1px hairlines. No shadows except a soft lift under the window.
 
 ## Components
 
-- Tamper button: paper fill, 1px ink border. Hover lifts by 1px. Pressed fills with ink and turns text paper. Focus has a 3px ink outline offset by 2px. Disabled is 50% opacity.
-- Verdict band: full-bleed, red or green. It slams in with `transform` over 280ms.
-- Invoice sheet: mono labels, serif values, hairline rows. A changed row gets red text and the audit line.
-- Reveal sheet: hidden text set in red on paper, with a red rule on its left.
-- Input: paper fill, 1px ink border, the same focus outline.
-- Loading: the sheet stays in place at half opacity, so the page doesn't jump.
+- Window: a 248px scenario rail and a main pane. On phones the rail becomes wrapped buttons above the pane.
+- Scenario row: transparent, soft text. Hover uses `--raised`. Selected uses `--raised` with primary text and a 2px red or green left mark. Focus has a 2px outline.
+- Verdict panel: filled red or green with white text, the largest thing on the page.
+- Invoice panel: mono labels, hairline rows. A changed row gets stop text and the audit line.
+- Reveal panel: hidden text in stop text with a red left rule.
+- Input: `--raised`, hairline, the same focus outline.
+- Loading: a panel of the same height with soft text, so the page doesn't jump.
 
 ## Motion
 
-1. Band slams in, 280ms, `cubic-bezier(.2,.9,.3,1.2)`.
-2. Audit line draws left to right under the value, 420ms, starting 180ms after the band.
+1. Verdict arrives over 260ms with a small rise.
+2. Audit line draws left to right, 420ms, starting 180ms later, with a faint glow.
 3. Changed value turns red as the line crosses it.
 
 With reduced motion on, everything appears at once.
 
 ## Do and don't
 
-- Do let the verdict be the largest thing on the page.
-- Do keep the sheet looking like a document, with no card chrome or icons.
-- Do keep red for failures only.
-- Don't add gradients, glass or glows.
-- Don't change any words or behaviour to suit the look.
+- Do let the verdict be the largest and brightest thing on the page.
+- Do keep every other surface muted.
+- Do keep the wallet address readable, with the line under it.
+- Don't add gradients behind content, glass or decorative glows.
+- Don't change behaviour to suit the look.
