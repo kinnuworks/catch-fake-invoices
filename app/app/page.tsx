@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <main style={{ maxWidth: 720, margin: "0 auto", padding: 16 }}>
       <h1 style={{ marginBottom: 4 }}>Catch fake invoices before paying</h1>
-      <p style={{ marginTop: 0 }}>A supplier's agent sends an invoice. Your agent checks it before any money moves. Try to fool it:</p>
+      <p style={{ marginTop: 0 }}>A supplier's agent sends an invoice. Your agent checks it before any money moves. In this example, someone changed the wallet. Try other ways to fool it:</p>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
         {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
@@ -71,7 +71,7 @@ export default function Home() {
               ))}
             </tbody>
           </table>
-          <p style={{ fontSize: 13 }}>This demo uses a sample invoice and throwaway keys. The checks are the real ones.</p>
+          <p style={{ fontSize: 13 }}>This demo uses a sample invoice and throwaway keys, and no money moves. The checks are the real ones.</p>
         </>
       )}
 
