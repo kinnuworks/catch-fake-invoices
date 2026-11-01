@@ -11,6 +11,9 @@ export type PayInput = {
   payer: string;
   protocol: "eip3009" | "permit2";
   merchantName: string;
+  /** From the checked invoice. The quote must match both before anyone is asked to sign. */
+  invoicePayTo: string;
+  maxTokenRaw: bigint;
   approve: (a: Approval) => Promise<boolean>;
   signTypedData: (eip712: any) => Promise<string>;
   pollMs?: number;
@@ -18,7 +21,7 @@ export type PayInput = {
 };
 
 export type PayResult = {
-  outcome: "declined" | "pending" | "payment-safe" | "payment-finalized" | "payment-failed";
+  outcome: "declined" | "quote-mismatch" | "pending" | "payment-safe" | "payment-finalized" | "payment-failed";
   attributionVerified: boolean;
   txHash?: string;
   network?: string;
@@ -36,6 +39,13 @@ export async function payOrder(input: PayInput): Promise<PayResult> {
 
   const prepared = await call("prepare_payment", { flow_id: flowId, payer_address: payer, protocol });
   const details = { payTo: prepared.pay_to, payer: prepared.payer, tokenTotalRaw: prepared.token_total_raw };
+
+  if (
+    String(prepared.pay_to).toLowerCase() !== input.invoicePayTo.toLowerCase() ||
+    BigInt(prepared.token_total_raw) > input.maxTokenRaw
+  ) {
+    return { ...base, outcome: "quote-mismatch", raw: prepared };
+  }
 
   if (!(await approve({ step: "sign", ...details }))) return { ...base, outcome: "declined", raw: prepared };
   const signature = await input.signTypedData(prepared.eip712);
@@ -81,10 +91,15 @@ export async function pollPayment(
   return { outcome: "pending", attributionVerified: false, flowId, paymentRequestId, raw: last };
 }
 
-/** The supplier's agent delivers only on its own query: right payee, right amount, attributed, on-chain. */
-export function supplierShouldDeliver(result: PayResult, expectedPayTo: string, paidTo?: string): boolean {
-  const onChain = result.outcome === "payment-safe" || result.outcome === "payment-finalized";
-  return onChain && result.attributionVerified && !!paidTo && paidTo.toLowerCase() === expectedPayTo.toLowerCase();
+/** The supplier's agent asks the gateway itself and delivers only if the money is on-chain, attributed and sent to it. */
+export async function supplierVerifies(call: Call, flowId: string, merchantName: string, ownWallet: string): Promise<boolean> {
+  const answer = await call("query_payment", { flow_id: flowId, expected_merchant_name: merchantName });
+  const payment = answer.payment ?? {};
+  return (
+    (payment.status === "payment-safe" || payment.status === "payment-finalized") &&
+    answer.attribution_verified === true &&
+    String(payment.to_pay_address ?? "").toLowerCase() === ownWallet.toLowerCase()
+  );
 }
 
 /** After payment-safe, asks again later for final confirmation. Keeps the safe result if the gateway has no newer answer. */

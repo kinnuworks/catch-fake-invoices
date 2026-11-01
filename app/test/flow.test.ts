@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkFinal, payOrder, supplierShouldDeliver, type Approval } from "../lib/flow";
+import { checkFinal, payOrder, supplierVerifies, type Approval } from "../lib/flow";
 
 // A stand-in for tests only. Real payments are recorded separately from the live gateway.
 const standIn = (statuses: string[], attributed = true) => {
@@ -16,7 +16,7 @@ const standIn = (statuses: string[], attributed = true) => {
 
 const input = (call: any, approve: (a: Approval) => Promise<boolean>) => ({
   call, flowId: "f", paymentRequestId: "p", payer: "0xB", protocol: "eip3009" as const,
-  merchantName: "Kinnu", approve, signTypedData: async () => "0xS", pollMs: 0,
+  merchantName: "Kinnu", invoicePayTo: "0xA", maxTokenRaw: 1000000n, approve, signTypedData: async () => "0xS", pollMs: 0,
 });
 
 describe("payOrder", () => {
@@ -45,14 +45,26 @@ describe("payOrder", () => {
   });
 });
 
-describe("supplierShouldDeliver", () => {
-  const base = { flowId: "f", paymentRequestId: "p", raw: null };
-  it("needs on-chain, attributed and the right payee", () => {
-    const ok = { ...base, outcome: "payment-safe" as const, attributionVerified: true };
-    expect(supplierShouldDeliver(ok, "0xAa", "0xaA")).toBe(true);
-    expect(supplierShouldDeliver(ok, "0xAa", "0xBb")).toBe(false);
-    expect(supplierShouldDeliver({ ...ok, attributionVerified: false }, "0xAa", "0xAa")).toBe(false);
-    expect(supplierShouldDeliver({ ...ok, outcome: "pending" }, "0xAa", "0xAa")).toBe(false);
+describe("quote check", () => {
+  it("won't ask to sign when the payee differs from the invoice", async () => {
+    const { call } = standIn([]);
+    const r = await payOrder({ ...input(call, async () => true), invoicePayTo: "0xZ" });
+    expect(r.outcome).toBe("quote-mismatch");
+  });
+  it("won't ask to sign above the invoice amount", async () => {
+    const { call } = standIn([]);
+    const r = await payOrder({ ...input(call, async () => true), maxTokenRaw: 999999n });
+    expect(r.outcome).toBe("quote-mismatch");
+  });
+});
+
+describe("supplierVerifies", () => {
+  const answer = (status: string, to: string, attribution_verified = true) => async () => ({ attribution_verified, payment: { status, to_pay_address: to } });
+  it("needs on-chain, attributed and its own wallet", async () => {
+    expect(await supplierVerifies(answer("payment-safe", "0xaA"), "f", "K", "0xAa")).toBe(true);
+    expect(await supplierVerifies(answer("payment-safe", "0xBb"), "f", "K", "0xAa")).toBe(false);
+    expect(await supplierVerifies(answer("payment-safe", "0xAa", false), "f", "K", "0xAa")).toBe(false);
+    expect(await supplierVerifies(answer("payment-included", "0xAa"), "f", "K", "0xAa")).toBe(false);
   });
 });
 

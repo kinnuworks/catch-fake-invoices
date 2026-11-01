@@ -22,10 +22,31 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That file couldn't be read as a PDF." }, { status: 422 });
   }
 
-  // The model only adds doubts for a person to read. It can't clear a warning or approve anything.
-  let doubts: string[] = [];
-  if (process.env.ANTHROPIC_API_KEY) {
-    doubts = await readInvoicePdf(Buffer.from(bytes).toString("base64")).then((r) => r.doubts).catch(() => []);
+  // The model reads the rendered page, so it catches what the rules can't. It can raise concerns
+  // and correct fields, but it can never clear a warning or approve anything.
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ ...review, doubts: [], aiRead: "off" });
   }
-  return NextResponse.json({ ...review, doubts });
+  try {
+    const ai = await readInvoicePdf(Buffer.from(bytes).toString("base64"));
+    const warnings = [...review.warnings];
+    if (payTo && ai.payTo && ai.payTo.toLowerCase() !== payTo.toLowerCase() && !warnings.some((w) => w.kind === "changed-wallet")) {
+      warnings.push({ kind: "changed-wallet", message: `Payment wallet changed: you expected ${payTo}, this asks for ${ai.payTo}.` });
+    }
+    if (amount !== undefined && ai.amountUsdCents !== Math.round(amount * 100) && !warnings.some((w) => w.kind === "wrong-amount")) {
+      warnings.push({ kind: "wrong-amount", message: `You agreed ${amount}, this asks for ${ai.amountUsdCents / 100}.` });
+    }
+    return NextResponse.json({
+      invoiceNumber: ai.invoiceNumber,
+      supplierName: ai.supplierName,
+      payTo: ai.payTo,
+      amount: ai.amountUsdCents / 100,
+      warnings: warnings.filter((w) => !(ai.payTo && w.kind === "no-wallet") && !(ai.amountUsdCents && w.kind === "no-amount")),
+      doubts: ai.doubts,
+      aiRead: "ok",
+    });
+  } catch (error) {
+    console.error("AI read failed:", error instanceof Error ? error.message : error);
+    return NextResponse.json({ ...review, doubts: [], aiRead: "failed" });
+  }
 }

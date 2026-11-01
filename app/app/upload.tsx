@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { InvoiceRead } from "../lib/readInvoice";
 
-type Review = InvoiceRead & { doubts: string[] };
+type Review = InvoiceRead & { doubts: string[]; aiRead: "ok" | "off" | "failed" };
 
 const KNOWN = "0x18Eb2D9DDfBBE58F66ee7f19899E783d3FA7E840";
 const SAMPLES = [
@@ -68,7 +68,7 @@ export function Upload() {
       {error && <p role="alert">{error}</p>}
       {review && (
         <div style={{ border: "2px solid", padding: 12 }} role="status">
-          <strong style={{ fontSize: 20 }}>{review.warnings.length ? "Don't pay this yet" : "Nothing wrong found"}</strong>
+          <strong style={{ fontSize: 20 }}>{review.warnings.length || review.doubts.length ? "Don't pay this yet" : "No problems found in these checks"}</strong>
           {review.warnings.length > 0 && (
             <ul style={{ paddingLeft: 20 }}>
               {review.warnings.map((w) => <li key={w.kind} style={{ overflowWrap: "anywhere" }}>{w.message}</li>)}
@@ -80,6 +80,8 @@ export function Upload() {
               <ul style={{ paddingLeft: 20, marginTop: 0 }}>{review.doubts.map((d) => <li key={d}>{d}</li>)}</ul>
             </>
           )}
+          {!review.warnings.length && !payTo && <p style={{ marginBottom: 0 }}>Add the wallet you've paid before, so a changed wallet can be caught.</p>}
+          {review.aiRead !== "ok" && <p style={{ marginBottom: 0 }}>The AI read didn't run, so this used fixed rules only and can miss things.</p>}
           <p style={{ marginBottom: 0, overflowWrap: "anywhere" }}>
             Read from the invoice: {review.invoiceNumber ?? "no number"}, {review.supplierName ?? "no supplier"}, {review.amount ?? "no total"}, {review.payTo ?? "no wallet"}.
           </p>

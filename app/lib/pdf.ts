@@ -2,11 +2,11 @@ import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 
 export type PdfRead = { visibleText: string; hiddenText: string[]; pages: number };
 
-const nearWhite = (rgb: number[]) => rgb.every((c) => c >= 0.9);
+const nearWhite = (rgb: number[]) => rgb.every((c) => c >= 0.8);
 
-/** Separates what a person sees from text drawn too small or in white, which only software reads. */
+/** Separates what a person sees from text drawn invisible, too small or nearly white, which only software reads. */
 export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
-  const doc = await getDocument({ data: bytes, useSystemFonts: true }).promise;
+  const doc = await getDocument({ data: bytes.slice(), useSystemFonts: true }).promise;
   const visible: string[] = [];
   const hidden: string[] = [];
 
@@ -16,6 +16,7 @@ export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
     let rgb = [0, 0, 0];
     let size = 12;
     let scale = 1;
+    let renderMode = 0;
     for (let i = 0; i < fnArray.length; i++) {
       const fn = fnArray[i];
       const args = argsArray[i];
@@ -26,6 +27,8 @@ export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
           : [...args].slice(0, 3).map((c: number) => c / 255);
       } else if (fn === OPS.setFillGray) {
         rgb = [args[0], args[0], args[0]];
+      } else if (fn === OPS.setTextRenderingMode) {
+        renderMode = args[0];
       } else if (fn === OPS.setFont) {
         size = args[1];
       } else if (fn === OPS.setTextMatrix) {
@@ -33,7 +36,7 @@ export async function readPdf(bytes: Uint8Array): Promise<PdfRead> {
       } else if (fn === OPS.showText) {
         const text = args[0].map((g: any) => g?.unicode ?? "").join("");
         if (!text.trim()) continue;
-        (nearWhite(rgb) || Math.abs(size) * scale < 3 ? hidden : visible).push(text);
+        (renderMode === 3 || nearWhite(rgb) || Math.abs(size) * scale < 3 ? hidden : visible).push(text);
       }
     }
   }

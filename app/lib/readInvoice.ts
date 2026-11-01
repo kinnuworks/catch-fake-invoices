@@ -5,7 +5,7 @@ export type InvoiceRead = {
   supplierName: string | null;
   payTo: string | null;
   amount: number | null;
-  warnings: { kind: "hidden-text" | "instruction" | "changed-wallet" | "wrong-amount" | "no-wallet" | "no-amount"; message: string }[];
+  warnings: { kind: "hidden-text" | "instruction" | "changed-wallet" | "wrong-amount" | "no-wallet" | "no-amount" | "many-wallets"; message: string }[];
 };
 
 const INSTRUCTION = /(ignore|disregard|override|bypass|skip)\b.{0,40}\b(check|instruction|rule|polic|verification|previous)|(approve|pay)\b.{0,40}\b(immediately|without|automatically)|\b(you are|as) an? (ai|agent|assistant)\b|system prompt/i;
@@ -21,6 +21,7 @@ export function parseInvoiceText(text: string) {
     invoiceNumber: lineValue(text, /invoice[ \t]*(?:number|no\.?|#)?[ \t]*[:#]?[ \t]*((?=[A-Z-]*\d)[A-Z0-9][A-Z0-9-]{2,})/i),
     supplierName: lineValue(text, /(?:from|supplier|vendor|bill from)\s*:\s*(.+)/i),
     payTo: wallets[0] ?? null,
+    wallets: [...new Set(wallets.map((w) => w.toLowerCase()))],
     amount: totals.length ? Math.max(...totals) : null,
   };
 }
@@ -42,11 +43,16 @@ export async function reviewInvoice(
   }
   if (!fields.payTo) warnings.push({ kind: "no-wallet", message: "No wallet address found on this invoice." });
   if (fields.amount === null) warnings.push({ kind: "no-amount", message: "No total found on this invoice." });
-  if (expected.payTo && fields.payTo && expected.payTo.toLowerCase() !== fields.payTo.toLowerCase()) {
-    warnings.push({ kind: "changed-wallet", message: `Payment wallet changed: you expected ${expected.payTo}, this asks for ${fields.payTo}.` });
+  const strange = fields.wallets.find((w) => w !== expected.payTo?.toLowerCase());
+  if (expected.payTo && strange) {
+    warnings.push({ kind: "changed-wallet", message: `Payment wallet changed: you expected ${expected.payTo}, this asks for ${strange}.` });
   }
   if (expected.amount !== undefined && fields.amount !== null && expected.amount !== fields.amount) {
     warnings.push({ kind: "wrong-amount", message: `You agreed ${expected.amount}, this asks for ${fields.amount}.` });
   }
-  return { ...fields, warnings };
+  if (fields.wallets.length > 1) {
+    warnings.push({ kind: "many-wallets", message: `This invoice shows ${fields.wallets.length} different wallets: ${fields.wallets.join(", ")}.` });
+  }
+  const { wallets: _wallets, ...read } = fields;
+  return { ...read, warnings };
 }
