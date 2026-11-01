@@ -33,10 +33,31 @@ export default function Home() {
 
   return (
     <main>
-      <div className="wrap">
-        <h1>Catch fake invoices before paying</h1>
-        <p className="lede">A supplier's agent sends an invoice. Your agent checks it before any money moves. In this example, someone changed the wallet.</p>
+      <header className="bar">
+        <div className="wrap">
+          <a className="brand" href="#top" aria-label="Satya home">
+            <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+              <rect width="32" height="32" rx="8" fill="#1B1816" />
+              <path d="M10 8h12M10 13h12M10 18h7" stroke="#F6F4EF" strokeWidth="2" strokeLinecap="round" />
+              <path d="M8 24h16" stroke="#FF5A5E" strokeWidth="3" strokeLinecap="round" />
+            </svg>
+            Satya
+          </a>
+          <nav className="nav" aria-label="Main">
+            <a className="link" href="#how">How it works</a>
+            <a className="link" href="#pdf">Check a PDF</a>
+            <a className="pill" href="#try">Try it</a>
+          </nav>
+        </div>
+      </header>
 
+      <div className="wrap" id="top">
+        <div className="hero">
+          <h1>Catch fake invoices before paying</h1>
+          <p className="lede">Satya is the agent that checks a supplier's invoice before any money moves. In this example, someone changed the wallet.</p>
+        </div>
+
+        <div className="stage" id="try">
         <div className="window">
           <div className="rail">
             <span className="who">Try other ways to fool it:</span>
@@ -55,7 +76,7 @@ export default function Home() {
             {result && rows && (
               <div key={result.scenario}>
                 <div className={`band ${result.pass ? "clear" : "stop"}`} role="status">
-                  <span className="who">Your agent's decision</span>
+                  <span className="who">Satya's decision</span>
                   <strong>{result.pass ? "Ready for your approval" : "Payment stopped"}</strong>
                   {result.pass ? (
                     <p>Signature, wallet, order and history all match. Nothing is paid until you approve it.</p>
@@ -86,10 +107,22 @@ export default function Home() {
             )}
           </div>
         </div>
+        </div>
       </div>
 
       <div className="wrap">
         <Upload />
+
+        <section className="how" id="how">
+          <h2>How it works</h2>
+          <p>Two agents, one invoice, and a person who approves.</p>
+          <ol className="steps">
+            <li><span className="who">01</span><strong>The supplier's agent signs an invoice</strong><span>It sets the amount and the wallet to pay.</span></li>
+            <li><span className="who">02</span><strong>Satya checks it</strong><span>Signature, wallet, order, amount, history and hidden text.</span></li>
+            <li><span className="who">03</span><strong>You approve</strong><span>Satya can stop a payment. Only you can approve one.</span></li>
+            <li><span className="who">04</span><strong>HSP settles it</strong><span>The supplier's agent asks HSP whether the money arrived, then delivers.</span></li>
+          </ol>
+        </section>
 
         {(runs as Run[]).length > 0 && (
           <section className="runs">
@@ -105,7 +138,9 @@ export default function Home() {
           </section>
         )}
       </div>
-      <footer className="end" />
+      <footer className="end">
+        <div className="wrap">Satya: catch fake invoices before paying.</div>
+      </footer>
     </main>
   );
 }

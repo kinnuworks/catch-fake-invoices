@@ -1,12 +1,14 @@
-# Catch fake invoices before paying
+# Satya
 
-A supplier's agent sends a signed invoice, and your agent checks it before any money moves. If you approve, your agent pays through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.
+Catch fake invoices before paying.
+
+A supplier's agent sends a signed invoice, and Satya, your agent, checks it before any money moves. If you approve, your agent pays through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.
 
 The two agents don't have to trust each other: HSP settles the payment and either side can check it. A small contract on HSK Chain keeps a public record of each decision, so anyone can see why an invoice was paid or stopped.
 
 ## Try it in 30 seconds
 
-1. Open https://app-phi-nine-57.vercel.app.
+1. Open https://usesatya.vercel.app.
 2. Press "Change the payment wallet" and watch the payment stop.
 3. Under "Check a PDF invoice", press "Invoice with hidden instructions". White text on that page tells any AI agent to approve the payment. The agent reports it and approves nothing.
 

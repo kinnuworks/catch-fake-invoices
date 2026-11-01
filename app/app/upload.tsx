@@ -56,7 +56,7 @@ export function Upload() {
   const stop = !!review && (review.warnings.length > 0 || review.doubts.length > 0);
 
   return (
-    <section className="pdf">
+    <section className="pdf" id="pdf">
       <h2>Check a PDF invoice</h2>
       <p>Try a sample, or upload your own. It isn't saved.</p>
       <div className="controls" style={{ marginBottom: 16 }}>
@@ -78,9 +78,9 @@ export function Upload() {
       {busy && <div className="sheet waiting">Reading the invoice…</div>}
       {error && <p role="alert">{error}</p>}
       {review && (
-        <div className="result" ref={resultRef}>
+        <div className="result dark" ref={resultRef}>
           <div className={`band ${stop ? "stop" : "clear"}`} role="status">
-            <span className="who">Your agent's decision</span>
+            <span className="who">Satya's decision</span>
             <strong>{stop ? "Don't pay this yet" : "No problems found in these checks"}</strong>
             {review.warnings.length > 0 && (
               <ul>
