@@ -32,64 +32,75 @@ export default function Home() {
   ] as const;
 
   return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: 16 }}>
-      <h1 style={{ marginBottom: 4 }}>Catch fake invoices before paying</h1>
-      <p style={{ marginTop: 0 }}>A supplier's agent sends an invoice. Your agent checks it before any money moves. In this example, someone changed the wallet. Try other ways to fool it:</p>
+    <main>
+      <div className="wrap">
+        <h1>Catch fake invoices before paying</h1>
+        <p className="lede">A supplier's agent sends an invoice. Your agent checks it before any money moves. In this example, someone changed the wallet. Try other ways to fool it:</p>
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
-        {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
-          <button key={key} onClick={() => setScenario(key)} aria-pressed={scenario === key}
-            style={{ padding: "8px 12px", fontWeight: scenario === key ? 700 : 400 }}>
-            {SCENARIOS[key]}
-          </button>
-        ))}
+        <div className="controls">
+          {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
+            <button key={key} onClick={() => setScenario(key)} aria-pressed={scenario === key}>
+              {SCENARIOS[key]}
+            </button>
+          ))}
+        </div>
+
+        {error && <p role="alert">{error}</p>}
       </div>
 
-      {error && <p role="alert">{error}</p>}
-      {!result && !error && <p>Checking the invoice…</p>}
+      {!result && !error && <div className="wrap"><div className="sheet waiting">Checking the invoice…</div></div>}
       {result && rows && (
-        <>
-          <div style={{ border: "2px solid", padding: 12, marginBottom: 16 }} role="status">
-            <strong style={{ fontSize: 24 }}>{result.pass ? "Ready for your approval" : "Payment stopped"}</strong>
-            {result.pass ? (
-              <p style={{ margin: "4px 0 0" }}>Signature, wallet, order and history all match. Nothing is paid until you approve it.</p>
-            ) : (
-              <ul style={{ margin: "4px 0 0", paddingLeft: 20 }}>
-                {result.findings.map((f) => <li key={f.reason} style={{ overflowWrap: "anywhere" }}>{f.message}</li>)}
-              </ul>
-            )}
+        <div key={result.scenario}>
+          <div className={`band ${result.pass ? "clear" : "stop"}`} role="status">
+            <div className="wrap">
+              <strong>{result.pass ? "Ready for your approval" : "Payment stopped"}</strong>
+              {result.pass ? (
+                <p>Signature, wallet, order and history all match. Nothing is paid until you approve it.</p>
+              ) : (
+                <ul>
+                  {result.findings.map((f) => <li key={f.reason}>{f.message}</li>)}
+                </ul>
+              )}
+            </div>
           </div>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <tbody>
-              {rows.map(([label, value, changed]) => (
-                <tr key={label} style={{ borderTop: "1px solid #ccc" }}>
-                  <th style={{ textAlign: "left", padding: 6, width: 90 }}>{label}</th>
-                  <td style={{ padding: 6, overflowWrap: "anywhere", fontWeight: changed ? 700 : 400 }}>
-                    {value}{changed && " (changed)"}
-                  </td>
-                </tr>
+          <div className="wrap">
+            <div className="sheet">
+              <table>
+                <tbody>
+                  {rows.map(([label, value, changed]) => (
+                    <tr key={label} className={changed ? "changed" : undefined}>
+                      <th>{label}</th>
+                      <td className={label === "Pay to" ? "mono" : undefined}>
+                        {changed ? <span className="mark">{value} (changed)</span> : value}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="note">This demo uses a sample invoice and throwaway keys, and no money moves. The checks are the real ones.</p>
+          </div>
+        </div>
+      )}
+
+      <div className="wrap">
+        <Upload />
+
+        {(runs as Run[]).length > 0 && (
+          <section className="runs">
+            <h2>Real payments through HSP</h2>
+            <ul>
+              {(runs as Run[]).map((r) => (
+                <li key={r.txUrl}>
+                  {r.label}: {r.status} on {r.network}, attribution {r.attributionVerified ? "verified" : "not verified"}.{" "}
+                  <a href={r.txUrl}>Transaction</a>{r.ledgerUrl && <> · <a href={r.ledgerUrl}>Ledger entry</a></>}
+                </li>
               ))}
-            </tbody>
-          </table>
-          <p style={{ fontSize: 13 }}>This demo uses a sample invoice and throwaway keys, and no money moves. The checks are the real ones.</p>
-        </>
-      )}
-
-      <Upload />
-
-      {(runs as Run[]).length > 0 && (
-        <section>
-          <h2>Real payments through HSP</h2>
-          <ul>
-            {(runs as Run[]).map((r) => (
-              <li key={r.txUrl}>
-                {r.label}: {r.status} on {r.network}, attribution {r.attributionVerified ? "verified" : "not verified"}.{" "}
-                <a href={r.txUrl}>Transaction</a>{r.ledgerUrl && <> · <a href={r.ledgerUrl}>Ledger entry</a></>}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+            </ul>
+          </section>
+        )}
+      </div>
+      <footer className="end" />
     </main>
   );
 }

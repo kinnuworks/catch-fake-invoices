@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { InvoiceRead } from "../lib/readInvoice";
 
 type Review = InvoiceRead & { doubts: string[]; aiRead: "ok" | "off" | "failed" };
@@ -18,6 +18,11 @@ export function Upload() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [review, setReview] = useState<Review | null>(null);
+
+  const resultRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (review) resultRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, [review]);
 
   async function send(file: Blob, wallet: string, total: string) {
     setBusy(true);
@@ -46,43 +51,57 @@ export function Upload() {
     await send(blob, KNOWN, "450");
   }
 
-  return (
-    <section style={{ marginTop: 32 }}>
-      <h2 style={{ marginBottom: 4 }}>Check a PDF invoice</h2>
-      <p style={{ marginTop: 0 }}>Try a sample, or upload your own. It isn't saved.</p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
-        {SAMPLES.map(([name, label]) => <button key={name} disabled={busy} onClick={() => sample(name)} style={{ padding: "8px 12px" }}>{label}</button>)}
-      </div>
-      <label style={{ display: "block", marginBottom: 8 }}>Wallet you've paid before (optional)
-        <input value={payTo} onChange={(e) => setPayTo(e.target.value)} style={{ display: "block", width: "100%", boxSizing: "border-box", padding: 6 }} />
-      </label>
-      <label style={{ display: "block", marginBottom: 8 }}>Amount you agreed (optional)
-        <input value={amount} inputMode="decimal" onChange={(e) => setAmount(e.target.value)} style={{ display: "block", width: "100%", boxSizing: "border-box", padding: 6 }} />
-      </label>
-      <label style={{ display: "block", marginBottom: 12 }}>Your invoice (PDF)
-        <input type="file" accept="application/pdf" disabled={busy} style={{ display: "block" }}
-          onChange={(e) => e.target.files?.[0] && send(e.target.files[0], payTo, amount)} />
-      </label>
+  const hidden = review?.warnings.find((w) => w.kind === "hidden-text");
+  const hiddenText = hidden?.message.match(/"(.*)"/s)?.[1];
+  const stop = !!review && (review.warnings.length > 0 || review.doubts.length > 0);
 
-      {busy && <p>Reading the invoice…</p>}
+  return (
+    <section className="pdf">
+      <h2>Check a PDF invoice</h2>
+      <p>Try a sample, or upload your own. It isn't saved.</p>
+      <div className="controls" style={{ marginBottom: 20 }}>
+        {SAMPLES.map(([name, label]) => <button key={name} disabled={busy} onClick={() => sample(name)}>{label}</button>)}
+      </div>
+      <div className="fields">
+        <label className="field">Wallet you've paid before (optional)
+          <input value={payTo} onChange={(e) => setPayTo(e.target.value)} />
+        </label>
+        <label className="field">Amount you agreed (optional)
+          <input value={amount} inputMode="decimal" onChange={(e) => setAmount(e.target.value)} />
+        </label>
+        <label className="field">Your invoice (PDF)
+          <input type="file" accept="application/pdf" disabled={busy}
+            onChange={(e) => e.target.files?.[0] && send(e.target.files[0], payTo, amount)} />
+        </label>
+      </div>
+
+      {busy && <div className="sheet waiting">Reading the invoice…</div>}
       {error && <p role="alert">{error}</p>}
       {review && (
-        <div style={{ border: "2px solid", padding: 12 }} role="status">
-          <strong style={{ fontSize: 20 }}>{review.warnings.length || review.doubts.length ? "Don't pay this yet" : "No problems found in these checks"}</strong>
-          {review.warnings.length > 0 && (
-            <ul style={{ paddingLeft: 20 }}>
-              {review.warnings.map((w) => <li key={w.kind} style={{ overflowWrap: "anywhere" }}>{w.message}</li>)}
-            </ul>
+        <div className="result" ref={resultRef}>
+          <div className={`band ${stop ? "stop" : "clear"}`} role="status">
+            <strong>{stop ? "Don't pay this yet" : "No problems found in these checks"}</strong>
+            {review.warnings.length > 0 && (
+              <ul>
+                {review.warnings.filter((w) => !(w.kind === "hidden-text" && hiddenText)).map((w) => <li key={w.kind}>{w.message}</li>)}
+              </ul>
+            )}
+          </div>
+          {hiddenText && (
+            <div className="reveal">
+              <span>Hidden text a person can't see:</span>
+              {hiddenText}
+            </div>
           )}
           {review.doubts.length > 0 && (
-            <>
-              <p style={{ marginBottom: 0 }}>Also worth checking:</p>
-              <ul style={{ paddingLeft: 20, marginTop: 0 }}>{review.doubts.map((d) => <li key={d}>{d}</li>)}</ul>
-            </>
+            <div className="detail">
+              Also worth checking:
+              <ul>{review.doubts.map((d) => <li key={d}>{d}</li>)}</ul>
+            </div>
           )}
-          {!review.warnings.length && !payTo && <p style={{ marginBottom: 0 }}>Add the wallet you've paid before, so a changed wallet can be caught.</p>}
-          {review.aiRead !== "ok" && <p style={{ marginBottom: 0 }}>The AI read didn't run, so this used fixed rules only and can miss things.</p>}
-          <p style={{ marginBottom: 0, overflowWrap: "anywhere" }}>
+          {!review.warnings.length && !payTo && <p className="detail">Add the wallet you've paid before, so a changed wallet can be caught.</p>}
+          {review.aiRead !== "ok" && <p className="detail">The AI read didn't run, so this used fixed rules only and can miss things.</p>}
+          <p className="detail">
             Read from the invoice: {review.invoiceNumber ?? "no number"}, {review.supplierName ?? "no supplier"}, {review.amount ?? "no total"}, {review.payTo ?? "no wallet"}.
           </p>
         </div>
