@@ -1,19 +1,18 @@
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono, Newsreader } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const serif = Newsreader({ subsets: ["latin"], variable: "--font-serif" });
-const sans = Geist({ subsets: ["latin"], variable: "--font-sans" });
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 export const metadata = {
-  title: "Satya: catch fake invoices before paying",
-  description: "Satya checks a supplier's invoice before your AI agent pays it.",
+  title: "InvoiceGuard: catch fake invoices before paying",
+  description: "InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="en" data-accent="amber" className={`${inter.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );

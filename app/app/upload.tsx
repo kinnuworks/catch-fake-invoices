@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { InvoiceRead } from "../lib/readInvoice";
 
 type Review = InvoiceRead & { doubts: string[]; aiRead: "ok" | "off" | "failed" };
@@ -19,10 +19,11 @@ export function Upload() {
   const [error, setError] = useState("");
   const [review, setReview] = useState<Review | null>(null);
 
-  const resultRef = useRef<HTMLDivElement>(null);
+  // Show a real result straight away, so this section is never empty.
   useEffect(() => {
-    if (review) resultRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
-  }, [review]);
+    sample("poisoned");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function send(file: Blob, wallet: string, total: string) {
     setBusy(true);
@@ -56,57 +57,70 @@ export function Upload() {
   const stop = !!review && (review.warnings.length > 0 || review.doubts.length > 0);
 
   return (
-    <section className="pdf" id="pdf">
-      <h2>Check a PDF invoice</h2>
-      <p>Try a sample, or upload your own. It isn't saved.</p>
-      <div className="controls" style={{ marginBottom: 16 }}>
-        {SAMPLES.map(([name, label]) => <button key={name} disabled={busy} onClick={() => sample(name)}>{label}</button>)}
-      </div>
-      <div className="fields">
-        <label className="field">Wallet you've paid before (optional)
-          <input value={payTo} onChange={(e) => setPayTo(e.target.value)} />
-        </label>
-        <label className="field">Amount you agreed (optional)
-          <input value={amount} inputMode="decimal" onChange={(e) => setAmount(e.target.value)} />
-        </label>
-        <label className="field">Your invoice (PDF)
-          <input type="file" accept="application/pdf" disabled={busy}
-            onChange={(e) => e.target.files?.[0] && send(e.target.files[0], payTo, amount)} />
-        </label>
-      </div>
-
-      {busy && <div className="sheet waiting">Reading the invoice…</div>}
-      {error && <p role="alert">{error}</p>}
-      {review && (
-        <div className="result dark" ref={resultRef}>
-          <div className={`band ${stop ? "stop" : "clear"}`} role="status">
-            <span className="who">Satya's decision</span>
-            <strong>{stop ? "Don't pay this yet" : "No problems found in these checks"}</strong>
-            {review.warnings.length > 0 && (
-              <ul>
-                {review.warnings.filter((w) => !(w.kind === "hidden-text" && hiddenText)).map((w) => <li key={w.kind}>{w.message}</li>)}
-              </ul>
-            )}
-          </div>
-          {hiddenText && (
-            <div className="reveal">
-              <span>Hidden text a person can't see:</span>
-              {hiddenText}
-            </div>
-          )}
-          {review.doubts.length > 0 && (
-            <div className="detail">
-              Also worth checking:
-              <ul>{review.doubts.map((d) => <li key={d}>{d}</li>)}</ul>
-            </div>
-          )}
-          {!review.warnings.length && !payTo && <p className="detail">Add the wallet you've paid before, so a changed wallet can be caught.</p>}
-          {review.aiRead !== "ok" && <p className="detail">The AI read didn't run, so this used fixed rules only and can miss things.</p>}
-          <p className="detail">
-            Read from the invoice: {review.invoiceNumber ?? "no number"}, {review.supplierName ?? "no supplier"}, {review.amount ?? "no total"}, {review.payTo ?? "no wallet"}.
-          </p>
+    <section className="section section--alt">
+      <div className="container">
+        <div className="section-head">
+          <span className="eyebrow">Hidden instructions</span>
+          <h2>Some invoices talk to your AI. <span className="t-muted">This one reports them.</span></h2>
+          <p className="lead">A PDF can hide white text telling an AI agent to approve a payment. Try a sample, or upload your own. It isn't saved.</p>
         </div>
-      )}
+        <div className="try">
+          <div className="card">
+            <p className="t-title">Check a PDF invoice</p>
+            <div className="samples">
+              {SAMPLES.map(([name, label]) => <button key={name} className="chip" disabled={busy} onClick={() => sample(name)}>{label}</button>)}
+            </div>
+            <label className="field">Wallet you've paid before (optional)
+              <input value={payTo} onChange={(e) => setPayTo(e.target.value)} />
+            </label>
+            <label className="field">Amount you agreed (optional)
+              <input value={amount} inputMode="decimal" onChange={(e) => setAmount(e.target.value)} />
+            </label>
+            <label className="field">Your invoice (PDF)
+              <input type="file" accept="application/pdf" disabled={busy}
+                onChange={(e) => e.target.files?.[0] && send(e.target.files[0], payTo, amount)} />
+            </label>
+          </div>
+
+          <div className="stage">
+            <div className="window window--dark">
+              <div className="window__bar"><span className="lights" aria-hidden="true"><i /><i /><i /></span><span className="window__title">invoice.pdf</span></div>
+              <div className="app-result result-pane" style={{ background: "var(--app-bg)", color: "var(--app-text)" }}>
+                {busy && <div className="sheet waiting">Reading the invoice…</div>}
+                {error && <p role="alert" style={{ color: "var(--app-stop-text)" }}>{error}</p>}
+                {review && !busy && (
+                  <>
+                    <div className={`verdict ${stop ? "stop" : "clear"}`} role="status">
+                      <span className="who">InvoiceGuard's decision</span>
+                      <strong style={{ fontSize: "clamp(30px,3.6vw,46px)" }}>{stop ? "Don't pay this yet" : "No problems found in these checks"}</strong>
+                      {review.warnings.some((w) => !(w.kind === "hidden-text" && hiddenText)) && (
+                        <ul>
+                          {review.warnings.filter((w) => !(w.kind === "hidden-text" && hiddenText)).map((w) => <li key={w.kind}>{w.message}</li>)}
+                        </ul>
+                      )}
+                    </div>
+                    {hiddenText && (
+                      <div className="reveal-box">
+                        <span>Hidden text a person can't see</span>
+                        {hiddenText}
+                      </div>
+                    )}
+                    {review.doubts.length > 0 && (
+                      <div className="detail">
+                        Also worth checking:
+                        <ul>{review.doubts.map((d) => <li key={d}>{d}</li>)}</ul>
+                      </div>
+                    )}
+                    {!review.warnings.length && !payTo && <p className="detail">Add the wallet you've paid before, so a changed wallet can be caught.</p>}
+                    {review.aiRead !== "ok" && <p className="detail">The AI read didn't run, so this used fixed rules only and can miss things.</p>}
+                    <p className="detail">Read from the invoice: {review.invoiceNumber ?? "no number"}, {review.supplierName ?? "no supplier"}, {review.amount ?? "no total"}, {review.payTo ?? "no wallet"}.</p>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

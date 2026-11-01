@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { DemoResult, Scenario } from "../lib/demo";
 import { SCENARIOS } from "../lib/demo-labels";
 import runs from "../data/runs.json";
+import { Logo } from "./logo";
 import { Upload } from "./upload";
 
 type Run = { label: string; status: string; attributionVerified: boolean; network: string; txUrl: string; ledgerUrl?: string };
@@ -33,100 +34,139 @@ export default function Home() {
 
   return (
     <main>
-      <header className="bar">
-        <div className="wrap">
-          <a className="brand" href="#top" aria-label="Satya home">
-            <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
-              <rect width="32" height="32" rx="8" fill="#1B1816" />
-              <path d="M10 8h12M10 13h12M10 18h7" stroke="#F6F4EF" strokeWidth="2" strokeLinecap="round" />
-              <path d="M8 24h16" stroke="#FF5A5E" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-            Satya
-          </a>
-          <nav className="nav" aria-label="Main">
-            <a className="link" href="#how">How it works</a>
-            <a className="link" href="#pdf">Check a PDF</a>
-            <a className="pill" href="#try">Try it</a>
-          </nav>
+      <nav className="nav" aria-label="Main">
+        <div className="nav__bar">
+          <a className="nav__brand" href="#top"><Logo />InvoiceGuard</a>
+          <div className="nav__links">
+            <a href="#try">Demo</a>
+            <a href="#check">Check a PDF</a>
+            <a href="#how">How it works</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <a className="btn btn-candy btn-sm" href="#try">Try it</a>
+        </div>
+      </nav>
+
+      <header className="hero" id="top">
+        <div className="container">
+          <h1>Catch <span className="hl">fake invoices</span> before paying.</h1>
+          <p className="lead">InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves. Try to fool it.</p>
+          <div className="trust"><span>No wallet</span><span>No signup</span><span>Sample data, no money moves</span></div>
+
+          <div className="hero__visual stage stage--hero" id="try">
+            <div className="window window--dark">
+              <div className="window__bar"><span className="lights" aria-hidden="true"><i /><i /><i /></span><span className="window__title">InvoiceGuard</span></div>
+              <div className="app">
+                <div className="rail">
+                  <span className="rail__label">Try to fool it</span>
+                  <div className="rows">
+                    {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
+                      <button key={key} className={key === "clean" ? "honest" : undefined} onClick={() => setScenario(key)} aria-pressed={scenario === key}>
+                        {SCENARIOS[key]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="pane">
+                  {error && <p role="alert">{error}</p>}
+                  {!result && !error && <div className="sheet waiting">Checking the invoice…</div>}
+                  {result && rows && (
+                    <div key={result.scenario}>
+                      <div className={`verdict ${result.pass ? "clear" : "stop"}`} role="status">
+                        <span className="who">InvoiceGuard's decision</span>
+                        <strong>{result.pass ? "Ready for your approval" : "Payment stopped"}</strong>
+                        {result.pass ? (
+                          <p>Signature, wallet, order and history all match. Nothing is paid until you approve it.</p>
+                        ) : (
+                          <ul>{result.findings.map((f) => <li key={f.reason}>{f.message}</li>)}</ul>
+                        )}
+                      </div>
+                      <div className="sheet">
+                        <p className="who">Invoice from the supplier's agent</p>
+                        <table>
+                          <tbody>
+                            {rows.map(([label, value, changed]) => (
+                              <tr key={label} className={changed ? "changed" : undefined}>
+                                <th>{label}</th>
+                                <td className={label === "Pay to" ? "mono" : undefined}>
+                                  {changed ? <span className="mark">{value} (changed)</span> : value}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <p className="app-note">This demo uses a sample invoice and throwaway keys. The checks are the real ones.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div className="wrap" id="top">
-        <div className="hero">
-          <h1>Catch fake invoices before paying</h1>
-          <p className="lede">Satya is the agent that checks a supplier's invoice before any money moves. In this example, someone changed the wallet.</p>
-        </div>
-
-        <div className="stage" id="try">
-        <div className="window">
-          <div className="rail">
-            <span className="who">Try other ways to fool it:</span>
-            <div className="rows">
-              {(Object.keys(SCENARIOS) as Scenario[]).map((key) => (
-                <button key={key} className={key === "clean" ? "honest" : undefined} onClick={() => setScenario(key)} aria-pressed={scenario === key}>
-                  {SCENARIOS[key]}
-                </button>
-              ))}
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Why it matters</span>
+            <h2>AI agents will pay invoices. <span className="t-muted">Some invoices lie.</span></h2>
+          </div>
+          <div className="grid grid-2">
+            <div className="card card--flat">
+              <h3>Without a check</h3>
+              <p>An invoice arrives with a new wallet. It looks normal, so the agent pays it, and a crypto payment is hard to get back.</p>
+            </div>
+            <div className="card card--chosen">
+              <h3>With InvoiceGuard</h3>
+              <p>The agent compares the invoice with the supplier's signature, the agreed order and past payments. If anything is off, the payment stops and you see why.</p>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="pane">
-            {error && <p role="alert">{error}</p>}
-            {!result && !error && <div className="sheet waiting">Checking the invoice…</div>}
-            {result && rows && (
-              <div key={result.scenario}>
-                <div className={`band ${result.pass ? "clear" : "stop"}`} role="status">
-                  <span className="who">Satya's decision</span>
-                  <strong>{result.pass ? "Ready for your approval" : "Payment stopped"}</strong>
-                  {result.pass ? (
-                    <p>Signature, wallet, order and history all match. Nothing is paid until you approve it.</p>
-                  ) : (
-                    <ul>
-                      {result.findings.map((f) => <li key={f.reason}>{f.message}</li>)}
-                    </ul>
-                  )}
-                </div>
-                <div className="sheet">
-                  <p className="who">Invoice from the supplier's agent</p>
-                  <table>
-                    <tbody>
-                      {rows.map(([label, value, changed]) => (
-                        <tr key={label} className={changed ? "changed" : undefined}>
-                          <th>{label}</th>
-                          <td className={label === "Pay to" ? "mono" : undefined}>
-                            {changed ? <span className="mark">{value} (changed)</span> : value}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <p className="next">If you approve a clean invoice, your agent pays it through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.</p>
-                <p className="note">This demo uses a sample invoice and throwaway keys, and no money moves. The checks are the real ones.</p>
-              </div>
-            )}
+      <div id="check"><Upload /></div>
+
+      <section className="section" id="how">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">How it works</span>
+            <h2>Two agents, one invoice. <span className="t-muted">You approve.</span></h2>
+          </div>
+          <div className="grid grid-2">
+            <div className="tile"><span className="icon-tile step-no">01</span><div><p className="t-title">The supplier's agent signs an invoice</p><p>It sets the amount and the wallet to pay.</p></div></div>
+            <div className="tile"><span className="icon-tile step-no">02</span><div><p className="t-title">InvoiceGuard checks it</p><p>Signature, wallet, order, amount, history and hidden text.</p></div></div>
+            <div className="tile"><span className="icon-tile step-no">03</span><div><p className="t-title">You approve</p><p>InvoiceGuard can stop a payment. Only you can approve one.</p></div></div>
+            <div className="tile"><span className="icon-tile step-no">04</span><div><p className="t-title">HSP settles it</p><p>HSP is HashKey's payment gateway. The supplier's agent asks it whether the money arrived, then delivers.</p></div></div>
           </div>
         </div>
+      </section>
+
+      <section className="section section--alt" id="faq">
+        <div className="container">
+          <div className="section-head"><h2>Questions.</h2></div>
+          <div className="faq">
+            <details><summary>Can the AI approve a payment?</summary><p>No. It reads the invoice and raises concerns. It can't clear a warning, and a person approves every payment.</p></details>
+            <details><summary>Does this page move real money?</summary><p>No. The demo uses sample invoices and throwaway keys.</p></details>
+            <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract on HSK Chain is designed to keep a public record of each decision.</p></details>
+            <details><summary>Is my PDF saved?</summary><p>No. It's read to run the check and then discarded.</p></details>
+            <details><summary>What can it miss?</summary><p>This hosted page reads PDFs with fixed rules, which can miss unusual layouts and some ways of hiding text. Treat "no problems found" as a result of these checks, and keep checking large payments yourself.</p></details>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div className="wrap">
-        <Upload />
+      <section className="section final">
+        <div className="container">
+          <Logo />
+          <h2>Try to fool it. <span className="t-muted">It takes a minute.</span></h2>
+          <div className="cta-row"><a className="btn btn-candy btn-lg" href="#try">Open the demo</a><a className="btn btn-outline btn-lg" href="#check">Check a PDF</a></div>
+        </div>
+      </section>
 
-        <section className="how" id="how">
-          <h2>How it works</h2>
-          <p>Two agents, one invoice, and a person who approves.</p>
-          <ol className="steps">
-            <li><span className="who">01</span><strong>The supplier's agent signs an invoice</strong><span>It sets the amount and the wallet to pay.</span></li>
-            <li><span className="who">02</span><strong>Satya checks it</strong><span>Signature, wallet, order, amount, history and hidden text.</span></li>
-            <li><span className="who">03</span><strong>You approve</strong><span>Satya can stop a payment. Only you can approve one.</span></li>
-            <li><span className="who">04</span><strong>HSP settles it</strong><span>The supplier's agent asks HSP whether the money arrived, then delivers.</span></li>
-          </ol>
-        </section>
-
-        {(runs as Run[]).length > 0 && (
-          <section className="runs">
-            <h2>Real payments through HSP</h2>
+      {(runs as Run[]).length > 0 && (
+        <section className="section">
+          <div className="container">
+            <h2>Real payments through HSP.</h2>
             <ul>
               {(runs as Run[]).map((r) => (
                 <li key={r.txUrl}>
@@ -135,11 +175,15 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-          </section>
-        )}
-      </div>
-      <footer className="end">
-        <div className="wrap">Satya: catch fake invoices before paying.</div>
+          </div>
+        </section>
+      )}
+
+      <footer className="footer">
+        <div className="container">
+          <span className="footer__brand"><Logo />InvoiceGuard</span>
+          <span>Catch fake invoices before paying.</span>
+        </div>
       </footer>
     </main>
   );
