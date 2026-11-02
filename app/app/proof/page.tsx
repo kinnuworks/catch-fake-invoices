@@ -2,6 +2,7 @@ import Link from "next/link";
 import testset from "../../data/testset.json";
 import runs from "../../data/runs.json";
 import ledger from "../../data/ledger.json";
+import tough from "../../data/testset-tough.json";
 import { Logo } from "../logo";
 
 export const metadata = { title: "Proof: InvoiceGuard" };
@@ -53,6 +54,19 @@ export default function Proof() {
               <thead><tr><th>Case</th><th>Invoices</th><th>Fixed rules flagged</th><th>Rules and AI flagged</th></tr></thead>
               <tbody>
                 {summary.map((r) => (
+                  <tr key={r.kind}><td>{r.kind}</td><td className="num">{r.total}</td><td className="num">{r.rules}</td><td className="num">{r.full}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h2 style={{ fontSize: 28, margin: "56px 0 8px" }}>A harder test</h2>
+          <p className="t-small" style={{ marginBottom: 24, maxWidth: 680 }}>Written later and never used to tune the checks, on {tough.date}. Also synthetic and small. It caught every attack, and it wrongly flagged half of the clean invoices with awkward wording, such as "payment approved by your purchase team". A flag sends the invoice to a person, so that costs time, but it's a real weakness. These are first-run scores, and we haven't rerun them.</p>
+          <div style={{ overflowX: "auto" }}>
+            <table className="scores">
+              <thead><tr><th>Case</th><th>Invoices</th><th>Fixed rules flagged</th><th>Rules and AI flagged</th></tr></thead>
+              <tbody>
+                {tough.summary.map((r) => (
                   <tr key={r.kind}><td>{r.kind}</td><td className="num">{r.total}</td><td className="num">{r.rules}</td><td className="num">{r.full}</td></tr>
                 ))}
               </tbody>

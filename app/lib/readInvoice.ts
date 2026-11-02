@@ -8,7 +8,7 @@ export type InvoiceRead = {
   warnings: { kind: "hidden-text" | "instruction" | "changed-wallet" | "wrong-amount" | "no-wallet" | "no-amount" | "many-wallets"; message: string }[];
 };
 
-const INSTRUCTION = /(ignore|disregard|override|bypass|skip)\b.{0,40}\b(check|instruction|rule|polic|verification|previous)|(approve|pay)\b.{0,40}\b(immediately|without|automatically)|\b(you are|as) an? (ai|agent|assistant)\b|system prompt/i;
+const INSTRUCTION = /(ignore|disregard|override|bypass|skip)\b.{0,40}\b(check|instruction|rule|polic|verification)|(approve|pay)\b.{0,40}\b(immediately|without|automatically)|\b(you are|as) an? (ai|agent|assistant)\b|system prompt/i;
 
 const lineValue = (text: string, label: RegExp) => text.match(label)?.[1]?.trim() ?? null;
 

@@ -136,11 +136,11 @@ export default function Home() {
             {realRun && (
               <div className="tile"><span className="icon-tile step-no">$1</span><div><p className="t-title">HSP settled the payment</p><p>{realRun.status} on {realRun.network}, attribution {realRun.attributionVerified ? "verified" : "not verified"}. <a href={realRun.txUrl} style={{ textDecoration: "underline" }}>See the transaction</a></p></div></div>
             )}
-            {ledger.links.map((l, i) => (
+            {ledger.links.slice(0, 3).concat(ledger.links.filter((l) => l.step === "Attack stopped").slice(0, 1)).map((l, i) => (
               <div className="tile" key={l.url}><span className="icon-tile step-no">{`0${i + 1}`}</span><div><p className="t-title">{l.step}</p><p>Written to the record contract on {ledger.network}. <a href={l.url} style={{ textDecoration: "underline" }}>See the entry</a></p></div></div>
             ))}
           </div>
-          <p className="t-small" style={{ marginTop: 24 }}>These use test tokens, on the test networks the organisers set for this hackathon. <a href={ledger.contract} style={{ textDecoration: "underline" }}>Contract source</a> · <a href="/proof" style={{ textDecoration: "underline" }}>Everything that works and doesn't yet</a></p>
+          <p className="t-small" style={{ marginTop: 24 }}>These use test tokens, on the test networks the organisers set for this hackathon. <a href={ledger.contract} style={{ textDecoration: "underline" }}>Contract source</a> · <a href="/proof" style={{ textDecoration: "underline" }}>All {(runs as Run[]).length} payments, and everything that doesn't work yet</a></p>
         </div>
       </section>
 
