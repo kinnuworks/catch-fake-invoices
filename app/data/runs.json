@@ -1,9 +1,32 @@
 [
   {
-    "label": "$1.00 invoice from the supplier agent, passed all six checks, then the supplier agent confirmed payment with HSP before delivering",
+    "label": "Market summary",
+    "amount": "$1.00",
+    "source": "signed invoice",
     "status": "payment-safe",
     "attributionVerified": true,
+    "delivered": true,
+    "supplier": "0x69B86943a43336dc6D0c2e45486bDdB78E952C00",
     "network": "Ethereum Sepolia, test USDC",
-    "txUrl": "https://sepolia.etherscan.io/tx/0xe8531415552f5b10a4afc5e861b91cf2136284be68e5bbca490e81a2a9cdc072"
+    "txUrl": "https://sepolia.etherscan.io/tx/0xe8531415552f5b10a4afc5e861b91cf2136284be68e5bbca490e81a2a9cdc072",
+    "at": "2026-11-02T10:19:11.907Z",
+    "timeline": [
+      [
+        "Order created, cart mandate signed by HSP",
+        "2026-11-02T18:16:24.53401+08:00"
+      ],
+      [
+        "Payment mandate signed and sent to the gateway",
+        "2026-11-02T18:16:27.059212+08:00"
+      ],
+      [
+        "In a block",
+        "2026-11-02T18:16:39.631474+08:00"
+      ],
+      [
+        "Latest status: payment-safe",
+        null
+      ]
+    ]
   }
 ]

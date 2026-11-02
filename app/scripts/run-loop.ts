@@ -6,6 +6,7 @@ import { createInterface } from "node:readline/promises";
 import { privateKeyToAccount } from "viem/accounts";
 import { checkInvoice } from "../lib/checks";
 import { payOrder } from "../lib/flow";
+import { createOrder } from "../lib/order";
 import { connectHsp } from "../lib/hsp";
 import { invoiceHash } from "../lib/invoice";
 import { SupplierAgent } from "../lib/supplier";
@@ -44,28 +45,7 @@ if (!verdict.pass) throw new Error(`Stopped: ${verdict.findings.map((f) => f.mes
 const config = await hsp.call("get_chain_config");
 const chosen = JSON.parse(need("HSP_NETWORK_CONFIG")); // {network, chain_id, contract_address, coin, payment_protocol, decimals}, copied from the schema output
 const value = (Number(signed.invoice.amountUsdCents) / 100).toFixed(2);
-const created = await hsp.call("create_order", {
-  merchant_name: MERCHANT_NAME,
-  pay_to: supplierWallet,
-  cart_mandate: {
-    contents: {
-      id: signed.invoice.invoiceNumber,
-      user_cart_confirmation_required: true,
-      cart_expiry: new Date(Date.now() + 30 * 60_000).toISOString(),
-      payment_request: {
-        method_data: [{
-          supported_methods: "https://www.x402.org/",
-          data: { x402Version: 2, network: chosen.network, chain_id: chosen.chain_id, contract_address: chosen.contract_address, coin: chosen.coin, pay_to: supplierWallet },
-        }],
-        details: {
-          id: `${signed.invoice.invoiceNumber}-${Date.now()}`,
-          display_items: [{ label: order.description, amount: { currency: "USD", value } }],
-          total: { label: "Total", amount: { currency: "USD", value } },
-        },
-      },
-    },
-  },
-});
+const created = await createOrder(hsp.call, MERCHANT_NAME, signed.invoice, order.description, chosen);
 
 const ask = createInterface({ input: process.stdin, output: process.stdout });
 const result = await payOrder({

@@ -14,6 +14,10 @@ The two agents don't have to trust each other: HSP settles the payment and eithe
 
 No wallet or signup is needed for these steps. Fixed rules answer first. When an API key is set, the AI read adds to the result, within a limit per visitor. To run it yourself, add `ANTHROPIC_API_KEY` to `app/.env` and run `pnpm install && pnpm dev` in `app/`.
 
+## For other agents
+
+Call `POST /api/v1/check` with a signed invoice before paying. It returns pass or the reasons to stop, and it never approves anything. The agent card is at `/.well-known/agent-card.json`.
+
 ## What it checks
 
 - The supplier really signed this invoice, and nobody edited it afterwards.

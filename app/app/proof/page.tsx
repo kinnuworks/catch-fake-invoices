@@ -7,7 +7,7 @@ import { Logo } from "../logo";
 export const metadata = { title: "Proof: InvoiceGuard" };
 
 type Row = { kind: string; total: number; rules: number; full: number; read: number };
-type Run = { label: string; status: string; attributionVerified: boolean; network: string; txUrl: string; ledgerUrl?: string };
+type Run = { label: string; amount?: string; source?: string; status: string; attributionVerified: boolean; delivered?: boolean; network: string; txUrl: string; timeline?: (string | null)[][] };
 
 export default function Proof() {
   const summary = testset.summary as Row[];
@@ -35,6 +35,7 @@ export default function Proof() {
           <h2 style={{ fontSize: 28, marginBottom: 16 }}>Status</h2>
           <ul className="status-list" style={{ marginBottom: 56 }}>
             <li><b className="done">Working</b><span>Signed invoices, the six invoice checks and the PDF review, all live on this site.</span></li>
+            <li><b className="done">Working</b><span>A <a href="/api/v1/check" style={{ textDecoration: "underline" }}>check API</a> any agent can call before paying, and an <a href="/.well-known/agent-card.json" style={{ textDecoration: "underline" }}>agent card</a>.</span></li>
             <li><b className="done">Working</b><span>A <a href="/api/supplier/invoice" style={{ textDecoration: "underline" }}>public supplier agent</a> that signs invoices, using a demo key with no funds.</span></li>
             <li>{realRuns.length ? <b className="done">Working</b> : <b className="todo">Not yet</b>}<span>{realRuns.length ? "Real payments through HSP, listed below." : "A real payment through HSP. The payment sequence is written and has only run against a test stand-in."}</span></li>
             <li><b className="done">Working</b><span>The record contract on {ledger.network}, with its source verified. <a href={ledger.contract} style={{ textDecoration: "underline" }}>See it</a>.</span></li>
@@ -61,11 +62,27 @@ export default function Proof() {
           {realRuns.length > 0 && (
             <>
               <h2 style={{ fontSize: 28, margin: "56px 0 16px" }}>Real payments through HSP</h2>
-              <ul>
-                {realRuns.map((r) => (
-                  <li key={r.txUrl}>{r.label}: {r.status} on {r.network}, attribution {r.attributionVerified ? "verified" : "not verified"}. <a href={r.txUrl} style={{ textDecoration: "underline" }}>Transaction</a></li>
-                ))}
-              </ul>
+              <p className="t-small" style={{ marginBottom: 16, maxWidth: 680 }}>{realRuns.length} payments we ran ourselves on test networks, with our own wallets and test tokens. They aren't outside customers.</p>
+              {realRuns[0]?.timeline && (
+                <>
+                  <h3 style={{ fontSize: 20, marginBottom: 12 }}>One payment, step by step</h3>
+                  <ul className="status-list" style={{ marginBottom: 32 }}>
+                    {realRuns[0].timeline.map(([step, at]) => (
+                      <li key={step}><b className="done">{at ? new Date(at).toISOString().slice(11, 19) : "Now"}</b><span>{step}</span></li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              <div style={{ overflowX: "auto" }}>
+                <table className="scores">
+                  <thead><tr><th>For</th><th>Amount</th><th>From</th><th>Status</th><th>Delivered</th><th>Proof</th></tr></thead>
+                  <tbody>
+                    {realRuns.map((r) => (
+                      <tr key={r.txUrl}><td>{r.label}</td><td className="num">{r.amount ?? ""}</td><td>{r.source ?? ""}</td><td>{r.status}</td><td>{r.delivered ? "Yes" : "No"}</td><td><a href={r.txUrl} style={{ textDecoration: "underline" }}>Transaction</a></td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <h2 style={{ fontSize: 28, margin: "40px 0 16px" }}>The record on {ledger.network}</h2>
               <ul>
                 {ledger.links.map((l) => (

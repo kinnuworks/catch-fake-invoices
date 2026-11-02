@@ -1,0 +1,13 @@
+{
+  "name": "InvoiceGuard",
+  "description": "Checks a supplier's signed invoice before an agent pays it. It can stop a payment. It can't approve one.",
+  "url": "https://useinvoiceguard.vercel.app",
+  "capabilities": { "streaming": false, "pushNotifications": false },
+  "defaultInputModes": ["application/json", "application/pdf"],
+  "defaultOutputModes": ["application/json"],
+  "skills": [
+    { "id": "check-invoice", "name": "Check a signed invoice", "description": "Signature, supplier, wallet, order, amount and duplicates. POST to /api/v1/check." },
+    { "id": "review-pdf", "name": "Review a PDF invoice", "description": "Hidden text and instructions aimed at software. POST to /api/review." },
+    { "id": "issue-invoice", "name": "Sample supplier agent", "description": "Issues a signed sample invoice with a demo key. GET /api/supplier/invoice." }
+  ]
+}

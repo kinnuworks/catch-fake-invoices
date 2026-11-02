@@ -7,6 +7,7 @@ import runs from "../data/runs.json";
 import ledger from "../data/ledger.json";
 import { WithAddresses } from "./address";
 import { Logo } from "./logo";
+import { LivePayment } from "./live";
 import { Challenge } from "./challenge";
 import { Upload } from "./upload";
 
@@ -68,7 +69,7 @@ export default function Home() {
           <h1>Catch <span className="hl">fake invoices</span> before paying.</h1>
           <p className="lead">InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves. It's for businesses that let agents pay their suppliers. Try to fool it.</p>
           <div className="trust"><span>No wallet</span><span>No signup</span><span>Sample data, no money moves</span></div>
-          <p className="t-small" style={{ marginTop: 12 }}>It has also run for real: <a href="#real" style={{ textDecoration: "underline" }}>see a $1.00 payment through HSP</a>.</p>
+          <p className="t-small" style={{ marginTop: 12 }}>It has also run for real: <a href="#live" style={{ textDecoration: "underline" }}>make a real 5-cent payment through HSP</a>, no wallet needed.</p>
 
           <div className="hero__visual stage stage--hero" id="try">
             <div className="window window--dark">
@@ -130,6 +131,7 @@ export default function Home() {
             <span className="eyebrow">Checkable on-chain</span>
             <h2>One real invoice, paid through HSP. <span className="t-muted">One attack, stopped.</span></h2>
           </div>
+          <LivePayment />
           <div className="grid grid-2">
             {realRun && (
               <div className="tile"><span className="icon-tile step-no">$1</span><div><p className="t-title">HSP settled the payment</p><p>{realRun.status} on {realRun.network}, attribution {realRun.attributionVerified ? "verified" : "not verified"}. <a href={realRun.txUrl} style={{ textDecoration: "underline" }}>See the transaction</a></p></div></div>

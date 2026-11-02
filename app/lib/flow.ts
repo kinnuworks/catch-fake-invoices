@@ -32,30 +32,34 @@ export type PayResult = {
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/** The guide's sequence: prepare, approve, sign, finalize, approve, submit, then poll the same payment. */
-export async function payOrder(input: PayInput): Promise<PayResult> {
-  const { call, flowId, paymentRequestId, payer, protocol, merchantName, approve } = input;
-  const base = { flowId, paymentRequestId, attributionVerified: false };
+/** Locks the quote and checks it against the invoice. Nothing is signed here. */
+export async function prepareOrder(input: Pick<PayInput, "call" | "flowId" | "payer" | "protocol" | "invoicePayTo" | "maxTokenRaw">) {
+  const prepared = await input.call("prepare_payment", { flow_id: input.flowId, payer: input.payer, protocol: input.protocol });
+  const matches =
+    String(prepared.pay_to).toLowerCase() === input.invoicePayTo.toLowerCase() && BigInt(prepared.token_total_raw) <= input.maxTokenRaw;
+  return { prepared, matches, details: { payTo: prepared.pay_to as string, payer: prepared.payer as string, tokenTotalRaw: prepared.token_total_raw as string } };
+}
 
-  const prepared = await call("prepare_payment", { flow_id: flowId, payer, protocol });
-  const details = { payTo: prepared.pay_to, payer: prepared.payer, tokenTotalRaw: prepared.token_total_raw };
-
-  if (
-    String(prepared.pay_to).toLowerCase() !== input.invoicePayTo.toLowerCase() ||
-    BigInt(prepared.token_total_raw) > input.maxTokenRaw
-  ) {
-    return { ...base, outcome: "quote-mismatch", raw: prepared };
-  }
-
-  if (!(await approve({ step: "sign", ...details }))) return { ...base, outcome: "declined", raw: prepared };
-  const signature = await input.signTypedData(prepared.eip712);
-
-  const finalized = await call("finalize_payment", {
+export async function signOrder(call: Call, prepared: any, signTypedData: (eip712: any) => Promise<string>) {
+  const signature = await signTypedData(prepared.eip712);
+  return call("finalize_payment", {
     signature,
     payment_payload: prepared.payment_payload,
     payment_mandate_contents: prepared.payment_mandate_contents,
     cart_hash: prepared.cart_hash,
   });
+}
+
+/** The guide's sequence: prepare, approve, sign, finalize, approve, submit, then poll the same payment. */
+export async function payOrder(input: PayInput): Promise<PayResult> {
+  const { call, flowId, paymentRequestId, merchantName, approve } = input;
+  const base = { flowId, paymentRequestId, attributionVerified: false };
+
+  const { prepared, matches, details } = await prepareOrder(input);
+  if (!matches) return { ...base, outcome: "quote-mismatch", raw: prepared };
+
+  if (!(await approve({ step: "sign", ...details }))) return { ...base, outcome: "declined", raw: prepared };
+  const finalized = await signOrder(call, prepared, input.signTypedData);
 
   if (!(await approve({ step: "submit", ...details }))) return { ...base, outcome: "declined", raw: finalized };
   await call("submit_payment", { payment_mandate_json: finalized.payment_mandate_json });

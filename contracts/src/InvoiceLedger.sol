@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.28;
 
 /// @title InvoiceLedger
 /// @notice Public record of what a buyer's agent decided about each supplier invoice, how it was paid
