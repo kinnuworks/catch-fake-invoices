@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WithAddresses } from "./address";
 
 type Quote = { flowId: string; invoice: string; amount: string; token: string; payTo: string; payer: string; tokenTotalRaw: string };
@@ -14,11 +14,35 @@ const post = async (step: string, body: unknown = {}) => {
 };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+const LAST_RUN = [
+  ["payment-safe", "See the payment on the explorer", "https://sepolia.etherscan.io/tx/0xc7ab0db6904a45ab790108794827ccefff97d0ce31addd40d42d9204961f7214"],
+  ["Recorded", "Invoice approved", "https://testnet-explorer.hskchain.net/tx/0x70aa328434e85f5e763ab6d06df4b1da3e952f62b8332fc93e6a3a51a0f2befe"],
+  ["Recorded", "HSP payment recorded", "https://testnet-explorer.hskchain.net/tx/0x47f2ff8753092d690ffc40b181ed4ee1ac4a4b0101127e8b82788265dd3137d5"],
+  ["Recorded", "Supplier confirmed delivery", "https://testnet-explorer.hskchain.net/tx/0x0d37e32a3b89b04df6e8139af0c70b1af3247a8b09f45f256e57cc17be50665c"],
+];
+
 export function LivePayment() {
   const [stage, setStage] = useState<"idle" | "quoting" | "sign" | "signing" | "submit" | "settling" | "done">("idle");
   const [quote, setQuote] = useState<Quote | null>(null);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [error, setError] = useState("");
+  const [offline, setOffline] = useState(false);
+
+  useEffect(() => {
+    post("status", { flowId: "probe" }).catch((e) => setOffline(e instanceof Error && e.message === "offline"));
+  }, []);
+
+  if (offline) {
+    return (
+      <div className="card card--flat" id="live" style={{ marginBottom: 32 }}>
+        <h3>A real payment, made from this page.</h3>
+        <p style={{ marginTop: 8 }}>HSP only answers approved machines, so this button runs from ours, and it's off right now. This is the last payment it made: 5 cents in test USDC, approved twice by a person.</p>
+        <ul className="status-list" style={{ marginTop: 16 }}>
+          {LAST_RUN.map(([tag, label, url]) => <li key={url}><b className="done">{tag}</b><span><a href={url} style={{ textDecoration: "underline" }}>{label}</a></span></li>)}
+        </ul>
+      </div>
+    );
+  }
 
   const guard = async (work: () => Promise<void>, back: typeof stage) => {
     setError("");
