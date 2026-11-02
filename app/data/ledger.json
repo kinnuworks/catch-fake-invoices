@@ -1,0 +1,22 @@
+{
+  "network": "HSK Chain testnet",
+  "contract": "https://testnet-explorer.hskchain.net/address/0x75466970EB671dF7fA84B1c00f7a00629def0239",
+  "links": [
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x3aa3e61f5f352377df8b94b48bf42e0233d0b2f1e347718939479e4d93785ed4"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xc55957a5f2b10ea73a0a6fc634a759d4cd9c92bf75827f66da15ea37468cff15"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xa6a5f038c6a14133dfab216db08b285caa3a837a404df21dde2198c88e9735bb"
+    },
+    {
+      "step": "Test attack stopped",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x194edbfbb7fe74fd201d09ac942e836c1e8b09277961bd54d87465e094c1403e"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { DemoResult, Scenario } from "../lib/demo";
 import { SCENARIOS } from "../lib/demo-labels";
 import runs from "../data/runs.json";
+import ledger from "../data/ledger.json";
 import { WithAddresses } from "./address";
 import { Logo } from "./logo";
 import { Challenge } from "./challenge";
@@ -35,6 +36,7 @@ export default function Home() {
       .catch(() => setError("The check didn't run. Try again."));
   }, [scenario]);
 
+  const realRun = (runs as Run[])[0];
   const rows = result && [
     ["Invoice", result.invoice.number, false],
     ["Order", result.invoice.order, false],
@@ -66,6 +68,7 @@ export default function Home() {
           <h1>Catch <span className="hl">fake invoices</span> before paying.</h1>
           <p className="lead">InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves. It's for businesses that let agents pay their suppliers. Try to fool it.</p>
           <div className="trust"><span>No wallet</span><span>No signup</span><span>Sample data, no money moves</span></div>
+          <p className="t-small" style={{ marginTop: 12 }}>It has also run for real: <a href="#real" style={{ textDecoration: "underline" }}>see a $1.00 payment through HSP</a>.</p>
 
           <div className="hero__visual stage stage--hero" id="try">
             <div className="window window--dark">
@@ -121,6 +124,24 @@ export default function Home() {
         </div>
       </header>
 
+      <section className="section" id="real">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Checkable on-chain</span>
+            <h2>One real invoice, paid through HSP. <span className="t-muted">One attack, stopped.</span></h2>
+          </div>
+          <div className="grid grid-2">
+            {realRun && (
+              <div className="tile"><span className="icon-tile step-no">$1</span><div><p className="t-title">HSP settled the payment</p><p>{realRun.status} on {realRun.network}, attribution {realRun.attributionVerified ? "verified" : "not verified"}. <a href={realRun.txUrl} style={{ textDecoration: "underline" }}>See the transaction</a></p></div></div>
+            )}
+            {ledger.links.map((l, i) => (
+              <div className="tile" key={l.url}><span className="icon-tile step-no">{`0${i + 1}`}</span><div><p className="t-title">{l.step}</p><p>Written to the record contract on {ledger.network}. <a href={l.url} style={{ textDecoration: "underline" }}>See the entry</a></p></div></div>
+            ))}
+          </div>
+          <p className="t-small" style={{ marginTop: 24 }}>These use test tokens, on the test networks the organisers set for this hackathon. <a href={ledger.contract} style={{ textDecoration: "underline" }}>Contract source</a> · <a href="/proof" style={{ textDecoration: "underline" }}>Everything that works and doesn't yet</a></p>
+        </div>
+      </section>
+
       <section className="section">
         <div className="container">
           <div className="section-head">
@@ -164,8 +185,8 @@ export default function Home() {
           <div className="section-head"><h2>Questions.</h2></div>
           <div className="faq">
             <details><summary>Can the AI approve a payment?</summary><p>No. It reads the invoice and raises concerns. It can't clear a warning, and a person approves every payment.</p></details>
-            <details><summary>Does this page move real money?</summary><p>No. The demo uses sample invoices and throwaway keys.</p></details>
-            <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract on HSK Chain is designed to keep a public record of each decision.</p></details>
+            <details><summary>Does this page move real money?</summary><p>No. The demo uses sample invoices and throwaway keys. The real payments shown above run separately, with test tokens, and a person approves each one.</p></details>
+            <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract keeps a public record of each decision. It's live on HSK Chain testnet.</p></details>
             <details><summary>Is my PDF saved?</summary><p>No. It's read to run the check and then discarded.</p></details>
             <details><summary>What can it miss?</summary><p>Fixed rules can miss unusual layouts and some ways of hiding text. The AI read catches more, and it can still be wrong. Treat "no problems found" as a result of these checks, and keep checking large payments yourself.</p></details>
           </div>
@@ -179,22 +200,6 @@ export default function Home() {
           <div className="cta-row"><a className="btn btn-candy btn-lg" href="#try">Open the demo</a><a className="btn btn-outline btn-lg" href="#check">Check a PDF</a></div>
         </div>
       </section>
-
-      {(runs as Run[]).length > 0 && (
-        <section className="section">
-          <div className="container">
-            <h2>Real payments through HSP.</h2>
-            <ul>
-              {(runs as Run[]).map((r) => (
-                <li key={r.txUrl}>
-                  {r.label}: {r.status} on {r.network}, attribution {r.attributionVerified ? "verified" : "not verified"}.{" "}
-                  <a href={r.txUrl}>Transaction</a>{r.ledgerUrl && <> · <a href={r.ledgerUrl}>Ledger entry</a></>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
 
       <footer className="footer">
         <div className="container">
