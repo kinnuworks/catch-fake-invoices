@@ -28,5 +28,95 @@
         null
       ]
     ]
+  },
+  {
+    "label": "Market summary",
+    "amount": "$0.25",
+    "source": "PDF invoice",
+    "status": "payment-safe",
+    "attributionVerified": true,
+    "delivered": true,
+    "supplier": "0x69B86943a43336dc6D0c2e45486bDdB78E952C00",
+    "network": "Ethereum Sepolia, test USDC",
+    "txUrl": "https://sepolia.etherscan.io/tx/0x454df488de25737808339b705a969291b2f39e98769708198cfcd14aae60f79f",
+    "at": "2026-11-02T10:46:04.378Z",
+    "timeline": [
+      [
+        "Order created, cart mandate signed by HSP",
+        "2026-11-02T18:43:05.055211+08:00"
+      ],
+      [
+        "Payment mandate signed and sent to the gateway",
+        "2026-11-02T18:43:05.615084+08:00"
+      ],
+      [
+        "In a block",
+        "2026-11-02T18:43:13.905085+08:00"
+      ],
+      [
+        "Latest status: payment-safe",
+        null
+      ]
+    ]
+  },
+  {
+    "label": "Security review of one file",
+    "amount": "$0.50",
+    "source": "signed invoice",
+    "status": "payment-safe",
+    "attributionVerified": true,
+    "delivered": true,
+    "supplier": "0x06e2cb8b2a7b97a2cdcFf902e16Ab3B3b6135d68",
+    "network": "Ethereum Sepolia, test USDC",
+    "txUrl": "https://sepolia.etherscan.io/tx/0x8093c7c24af517d7c0d47d0ff0042668d47a8a10b933c26d676fd29a4148ca06",
+    "at": "2026-11-02T10:46:04.436Z",
+    "timeline": [
+      [
+        "Order created, cart mandate signed by HSP",
+        "2026-11-02T18:43:17.713684+08:00"
+      ],
+      [
+        "Payment mandate signed and sent to the gateway",
+        "2026-11-02T18:43:19.293408+08:00"
+      ],
+      [
+        "In a block",
+        "2026-11-02T18:43:26.200485+08:00"
+      ],
+      [
+        "Latest status: payment-safe",
+        null
+      ]
+    ]
+  },
+  {
+    "label": "Translation of a contract",
+    "amount": "$0.40",
+    "source": "signed invoice",
+    "status": "payment-safe",
+    "attributionVerified": true,
+    "delivered": true,
+    "supplier": "0xe71935f1eE00b1d80185cf5e6d32e49C1AC8C72D",
+    "network": "Ethereum Sepolia, test USDC",
+    "txUrl": "https://sepolia.etherscan.io/tx/0x770bedcff475d410a8abbace7f7a201548ba09387c13087425fea45a8dbd6535",
+    "at": "2026-11-02T10:46:04.559Z",
+    "timeline": [
+      [
+        "Order created, cart mandate signed by HSP",
+        "2026-11-02T18:43:11.694365+08:00"
+      ],
+      [
+        "Payment mandate signed and sent to the gateway",
+        "2026-11-02T18:43:19.345025+08:00"
+      ],
+      [
+        "In a block",
+        "2026-11-02T18:43:26.204173+08:00"
+      ],
+      [
+        "Latest status: payment-safe",
+        null
+      ]
+    ]
   }
 ]
