@@ -3,6 +3,7 @@ import testset from "../../data/testset.json";
 import runs from "../../data/runs.json";
 import ledger from "../../data/ledger.json";
 import tough from "../../data/testset-tough.json";
+import retest from "../../data/testset-tough-retest.json";
 import { Logo } from "../logo";
 
 export const metadata = { title: "Proof: InvoiceGuard" };
@@ -17,6 +18,8 @@ export default function Proof() {
   const attackTotal = attacks.reduce((n, r) => n + r.total, 0);
   const caught = attacks.reduce((n, r) => n + r.full, 0);
   const realRuns = runs as Run[];
+  const retestAttacks = retest.summary.slice(1).reduce((n, r) => n + r.total, 0);
+  const retestCaught = retest.summary.slice(1).reduce((n, r) => n + r.full, 0);
 
   return (
     <main>
@@ -61,7 +64,7 @@ export default function Proof() {
           </div>
 
           <h2 style={{ fontSize: 28, margin: "56px 0 8px" }}>A harder test</h2>
-          <p className="t-small" style={{ marginBottom: 24, maxWidth: 680 }}>Written later and never used to tune the checks, on {tough.date}. Also synthetic and small. It caught every attack, and it wrongly flagged half of the clean invoices with awkward wording, such as "payment approved by your purchase team". A flag sends the invoice to a person, so that costs time, but it's a real weakness. These are first-run scores, and we haven't rerun them.</p>
+          <p className="t-small" style={{ marginBottom: 24, maxWidth: 680 }}>Written later and never used to tune the checks, on {tough.date}. Also synthetic and small. The first run caught every attack, and it wrongly flagged half of the clean invoices with awkward wording, such as "payment approved by your purchase team". We changed the AI's instructions, then ran new wording it hadn't seen: {retestCaught}/{retestAttacks} attacks flagged and {retest.summary[0].full}/{retest.summary[0].total} clean invoices wrongly flagged. The table shows the first run. Twelve clean invoices is too few to call this solved.</p>
           <div style={{ overflowX: "auto" }}>
             <table className="scores">
               <thead><tr><th>Case</th><th>Invoices</th><th>Fixed rules flagged</th><th>Rules and AI flagged</th></tr></thead>
