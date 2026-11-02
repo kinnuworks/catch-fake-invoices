@@ -47,10 +47,10 @@ const value = (Number(signed.invoice.amountUsdCents) / 100).toFixed(2);
 const created = await hsp.call("create_order", {
   merchant_name: MERCHANT_NAME,
   pay_to: supplierWallet,
-  // Check this shape against the live create_order schema before the first payment.
   cart_mandate: {
     contents: {
       id: signed.invoice.invoiceNumber,
+      user_cart_confirmation_required: true,
       cart_expiry: new Date(Date.now() + 30 * 60_000).toISOString(),
       payment_request: {
         method_data: [{
@@ -58,7 +58,7 @@ const created = await hsp.call("create_order", {
           data: { x402Version: 2, network: chosen.network, chain_id: chosen.chain_id, contract_address: chosen.contract_address, coin: chosen.coin, pay_to: supplierWallet },
         }],
         details: {
-          id: signed.invoice.invoiceNumber,
+          id: `${signed.invoice.invoiceNumber}-${Date.now()}`,
           display_items: [{ label: order.description, amount: { currency: "USD", value } }],
           total: { label: "Total", amount: { currency: "USD", value } },
         },

@@ -37,7 +37,7 @@ export async function payOrder(input: PayInput): Promise<PayResult> {
   const { call, flowId, paymentRequestId, payer, protocol, merchantName, approve } = input;
   const base = { flowId, paymentRequestId, attributionVerified: false };
 
-  const prepared = await call("prepare_payment", { flow_id: flowId, payer_address: payer, protocol });
+  const prepared = await call("prepare_payment", { flow_id: flowId, payer, protocol });
   const details = { payTo: prepared.pay_to, payer: prepared.payer, tokenTotalRaw: prepared.token_total_raw };
 
   if (

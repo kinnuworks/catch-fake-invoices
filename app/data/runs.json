@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "label": "$1.00 invoice from the supplier agent, passed all six checks, then the supplier agent confirmed payment with HSP before delivering",
+    "status": "payment-safe",
+    "attributionVerified": true,
+    "network": "Ethereum Sepolia, test USDC",
+    "txUrl": "https://sepolia.etherscan.io/tx/0xe8531415552f5b10a4afc5e861b91cf2136284be68e5bbca490e81a2a9cdc072"
+  }
+]

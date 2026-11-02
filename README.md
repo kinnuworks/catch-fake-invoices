@@ -27,7 +27,8 @@ The AI reads the invoice and can raise concerns. It can't clear a warning or app
 ## Current state
 
 - Working: signed invoices, the checks, the demo page and the PDF review, with tests.
-- Tested only against a stand-in: the HSP payment sequence. No real HSP payment has run yet.
+- Working: payment through HSP. [First payment](https://sepolia.etherscan.io/tx/0xe8531415552f5b10a4afc5e861b91cf2136284be68e5bbca490e81a2a9cdc072): a $1.00 invoice on Ethereum Sepolia with test USDC, the network the organisers set for payment testing. It reached `payment-safe`, not yet final, with attribution verified, and the supplier agent delivered only after asking HSP itself.
+- The live page's demo buttons don't move money. Payments run from `app/scripts/run-loop.ts`, with a person approving twice.
 - Not deployed yet: the `InvoiceLedger` contract in `contracts/`.
 - Sample invoices and demo keys are illustrations. Hidden text tricks beyond the ones listed in `app/lib/pdf.ts` depend on the AI read, which can miss things.
 
