@@ -4,7 +4,7 @@ Catch fake invoices before paying.
 
 A supplier's agent sends a signed invoice, and InvoiceGuard, your agent, checks it before any money moves. If you approve, your agent pays through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.
 
-The two agents don't have to trust each other: HSP settles the payment and either side can check it. A small contract on HSK Chain testnet keeps a public record of each decision, so anyone can see why an invoice was paid or stopped.
+The two agents don't have to trust each other: HSP settles the payment and either side can check it. A small contract on HSK Chain testnet records each decision. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.
 
 ## Try it in 30 seconds
 
@@ -12,7 +12,7 @@ The two agents don't have to trust each other: HSP settles the payment and eithe
 2. Press "Change the payment wallet" and watch the payment stop.
 3. Under "Check a PDF invoice", press "Invoice with hidden instructions". White text on that page tells any AI agent to approve the payment. The agent reports it and approves nothing.
 
-No wallet or signup is needed for these steps. Fixed rules answer first. When an API key is set, the AI read adds to the result, within a limit per visitor. To run it yourself, add `ANTHROPIC_API_KEY` to `app/.env` and run `pnpm install && pnpm dev` in `app/`.
+No wallet or signup is needed for these steps. Fixed rules answer first, then an AI read adds anything they missed, within a limit per visitor. To run it yourself, add `ANTHROPIC_API_KEY` to `app/.env` and run `pnpm install && pnpm dev` in `app/`.
 
 ## For other agents
 

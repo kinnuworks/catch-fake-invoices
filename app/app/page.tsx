@@ -68,8 +68,8 @@ export default function Home() {
           <span className="badge badge--dot">Built for HSK Chain and HSP, HashKey's payment gateway</span>
           <h1>Catch <span className="hl">fake invoices</span> before paying.</h1>
           <p className="lead">InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves. It's for businesses that let agents pay their suppliers. Try to fool it.</p>
-          <div className="trust"><span>No wallet</span><span>No signup</span><span>Sample data, no money moves</span></div>
-          <p className="t-small" style={{ marginTop: 12 }}>It has also run for real: <a href="#live" style={{ textDecoration: "underline" }}>make a real 5-cent payment through HSP</a>, no wallet needed.</p>
+          <div className="trust"><span>No wallet</span><span>No signup</span><span>This demo uses sample invoices</span></div>
+          <p className="t-small" style={{ marginTop: 12 }}>Want to see real tokens move? <a href="#live" style={{ textDecoration: "underline" }}>Make a 5-cent test payment through HSP</a>, still with no wallet.</p>
 
           <div className="hero__visual stage stage--hero" id="try">
             <div className="window window--dark">
@@ -188,7 +188,7 @@ export default function Home() {
           <div className="faq">
             <details><summary>Can the AI approve a payment?</summary><p>No. It reads the invoice and raises concerns. It can't clear a warning, and a person approves every payment.</p></details>
             <details><summary>Does this page move real money?</summary><p>No. The demo uses sample invoices and throwaway keys. The real payments shown above run separately, with test tokens, and a person approves each one.</p></details>
-            <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract keeps a public record of each decision. It's live on HSK Chain testnet.</p></details>
+            <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract on HSK Chain testnet records each decision. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.</p></details>
             <details><summary>Is my PDF saved?</summary><p>No. It's read to run the check and then discarded.</p></details>
             <details><summary>What can it miss?</summary><p>Fixed rules can miss unusual layouts and some ways of hiding text. The AI read catches more, and it can still be wrong. Treat "no problems found" as a result of these checks, and keep checking large payments yourself.</p></details>
           </div>
