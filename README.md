@@ -4,7 +4,7 @@ Catch fake invoices before paying.
 
 A supplier's agent sends a signed invoice, and InvoiceGuard, your agent, checks it before any money moves. If you approve, your agent pays through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.
 
-The two agents don't have to trust each other: HSP settles the payment and either side can check it. A small contract on HSK Chain testnet records each decision. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.
+The two agents don't have to trust each other: HSP settles the payment and either side can check it. A small contract on HSK Chain mainnet records each decision. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.
 
 ## Try it in 30 seconds
 
@@ -32,9 +32,10 @@ The AI reads the invoice and can raise concerns. It can't clear a warning or app
 
 - Working: signed invoices, the checks, the demo page and the PDF review, with tests.
 - Working: payment through HSP. [First payment](https://sepolia.etherscan.io/tx/0xe8531415552f5b10a4afc5e861b91cf2136284be68e5bbca490e81a2a9cdc072): a $1.00 invoice on Ethereum Sepolia with test USDC, the network the organisers set for payment testing. It reached `payment-safe`, not yet final, with attribution verified, and the supplier agent delivered only after asking HSP itself.
-- The live page's demo buttons don't move money. Payments run from `app/scripts/run-loop.ts`, with a person approving twice.
-- Working: the `InvoiceLedger` contract [on HSK Chain testnet](https://testnet-explorer.hskchain.net/address/0x75466970EB671dF7fA84B1c00f7a00629def0239), source verified, holding that payment's approval, payment and delivery, and one stopped test attack.
-- Not done yet: the contract and a payment on HSK Chain mainnet.
+- Working: 30 payments in all, to 3 supplier wallets, all `payment-safe` and none final yet, listed at `/proof`. They use our own wallets and test tokens.
+- The page's demo buttons don't move money. "Start a real payment" does, for 5 cents of test USDC, while the machine running `app/scripts/relay.ts` is on. A person approves twice.
+- Working: the `InvoiceLedger` contract [on HSK Chain mainnet](https://hsk.blockscout.com/address/0xA9b9E3aD6C5997c0522151bCC05783Bc794eFe23), source verified, holding each payment's approval, payment and delivery, and 7 stopped test attacks. It only records decisions: no tokens move on mainnet. The live button writes to the [testnet contract](https://testnet-explorer.hskchain.net/address/0x75466970EB671dF7fA84B1c00f7a00629def0239).
+- Not done yet: a payment on mainnet. HSP's live networks are all test networks.
 - Sample invoices and demo keys are illustrations. Hidden text tricks beyond the ones listed in `app/lib/pdf.ts` depend on the AI read, which can miss things.
 
 ## Tests

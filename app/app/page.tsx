@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { DemoResult, Scenario } from "../lib/demo";
 import { SCENARIOS } from "../lib/demo-labels";
 import runs from "../data/runs.json";
-import ledger from "../data/ledger.json";
+import ledger from "../data/ledger-mainnet.json";
 import { WithAddresses } from "./address";
 import { Logo } from "./logo";
 import { LivePayment } from "./live";
@@ -140,7 +140,7 @@ export default function Home() {
               <div className="tile" key={l.url}><span className="icon-tile step-no">{`0${i + 1}`}</span><div><p className="t-title">{l.step}</p><p>Written to the record contract on {ledger.network}. <a href={l.url} style={{ textDecoration: "underline" }}>See the entry</a></p></div></div>
             ))}
           </div>
-          <p className="t-small" style={{ marginTop: 24 }}>These use test tokens, on the test networks the organisers set for this hackathon. <a href={ledger.contract} style={{ textDecoration: "underline" }}>Contract source</a> · <a href="/proof" style={{ textDecoration: "underline" }}>All {(runs as Run[]).length} payments, and everything that doesn't work yet</a></p>
+          <p className="t-small" style={{ marginTop: 24 }}>The payments use test USDC on Ethereum Sepolia, because HSP's live networks are all test networks. The record is on HSK Chain mainnet and moves no tokens. <a href={ledger.contract} style={{ textDecoration: "underline" }}>Contract source</a> · <a href="/proof" style={{ textDecoration: "underline" }}>All {(runs as Run[]).length} payments, and everything that doesn't work yet</a></p>
         </div>
       </section>
 
@@ -188,7 +188,7 @@ export default function Home() {
           <div className="faq">
             <details><summary>Can the AI approve a payment?</summary><p>No. It reads the invoice and raises concerns. It can't clear a warning, and a person approves every payment.</p></details>
             <details><summary>Does this page move real money?</summary><p>No. The demo uses sample invoices and throwaway keys. The real payments shown above run separately, with test tokens, and a person approves each one.</p></details>
-            <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract on HSK Chain testnet records each decision. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.</p></details>
+            <details><summary>Why does it use HSP and HSK Chain?</summary><p>HSP lets either agent check a payment for itself, so they don't have to trust each other. A small contract on HSK Chain mainnet records each decision. The live 5-cent button writes to testnet. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.</p></details>
             <details><summary>Is my PDF saved?</summary><p>No. It's read to run the check and then discarded.</p></details>
             <details><summary>What can it miss?</summary><p>Fixed rules can miss unusual layouts and some ways of hiding text. The AI read catches more, and it can still be wrong. Treat "no problems found" as a result of these checks, and keep checking large payments yourself.</p></details>
           </div>

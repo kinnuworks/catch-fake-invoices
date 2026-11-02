@@ -10,8 +10,8 @@ const abi = parseAbi([
 ]);
 
 export const NETWORKS = {
-  testnet: { id: 133, name: "HSK Chain testnet", rpc: "https://testnet.hsk.xyz", explorer: "https://testnet-explorer.hskchain.net", address: "0x75466970EB671dF7fA84B1c00f7a00629def0239" as Hex },
-  mainnet: { id: 177, name: "HSK Chain mainnet", rpc: "https://mainnet.hsk.xyz", explorer: "https://hsk.blockscout.com", address: (process.env.LEDGER_MAINNET ?? "0x") as Hex },
+  testnet: { id: 133, name: "HSK Chain testnet", rpc: "https://testnet.hsk.xyz", explorer: "https://testnet-explorer.hskchain.net", address: "0x75466970EB671dF7fA84B1c00f7a00629def0239" as Hex, gasFloor: "0.0008", gasTopUp: "0.002" },
+  mainnet: { id: 177, name: "HSK Chain mainnet", rpc: "https://mainnet.hsk.xyz", explorer: "https://hsk.blockscout.com", address: (process.env.LEDGER_MAINNET ?? "0x") as Hex, gasFloor: "0.05", gasTopUp: "0.3" },
 } as const;
 
 export type LedgerEntry = { step: string; url: string };
@@ -34,8 +34,8 @@ export function ledger(network: keyof typeof NETWORKS, buyer: LocalAccount) {
   return {
     net,
     async recordPaid(run: { invoiceHash: Hex; amountUsdCents: bigint; chainId: bigint; txHash: Hex; paymentRequestId: string; deliveryHash: Hex }, supplier: LocalAccount) {
-      if ((await reader.getBalance({ address: supplier.address })) < parseEther("0.0008")) {
-        await settled(await wallet(buyer).sendTransaction({ to: supplier.address, value: parseEther("0.002") }), "gas");
+      if ((await reader.getBalance({ address: supplier.address })) < parseEther(net.gasFloor)) {
+        await settled(await wallet(buyer).sendTransaction({ to: supplier.address, value: parseEther(net.gasTopUp) }), "gas");
       }
       const status = async () => Number((await reader.readContract({ ...base, functionName: "getInvoice", args: [buyer.address, run.invoiceHash] })).status);
       const entries: LedgerEntry[] = [];
