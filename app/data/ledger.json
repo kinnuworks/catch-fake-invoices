@@ -57,6 +57,330 @@
     {
       "step": "Supplier confirmed delivery",
       "url": "https://testnet-explorer.hskchain.net/tx/0xeb5d4ee5e7a3952fa998ca67d24722e8a45a82604f55e0c0e8d2079657285dc9"
+    },
+    {
+      "step": "Attack stopped",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x07c35db364191aca00e2e730de974f7319b9be5a0aa1b7cd05cfa26e8ea02403"
+    },
+    {
+      "step": "Attack stopped",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x8ced4c220ea07306765fef88c14685adaf40e160538815dad7ed6bd3ccaf2c45"
+    },
+    {
+      "step": "Attack stopped",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xd53876361a508de159317903deb8f6ce94e8292e09319d6b43f0849c918a8bca"
+    },
+    {
+      "step": "Attack stopped",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x236732ecfd55b0c877990c5df014d305bcda226c9823576c9514ddf67413249c"
+    },
+    {
+      "step": "Attack stopped",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x086a2a8b6610507421e936180cd3d46fdf080ef2c0162bcfbc5f8feb23138744"
+    },
+    {
+      "step": "Attack stopped",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x47ccd262371cc93a8109bb5f93bf0d15711f6e1fabb7c1db4b4b0c5cba32b306"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xb7a003f6b6a04eaca4ae35899e67c8fb70fc8c40018d669e65938427b30255de"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xdafb0824a66fb13ed3b040e9414d9ae68cc8c77174f4faba2e7fefb14fd31fe7"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x25d3f2687e6ddb3a9ca7565aa22fe4cec8758d2131764f4ef336f886e750ad23"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x71ba84bf4967360dc0172e30efaf9c0d938f64fd793a9a2f6fa115231676c9bc"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xd7939a04c513098dcaffa3cc505c9153cfc1dc4e127d4893e1a89efc005685c6"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x832eb8242bd45e66a8b00838af9b9c102fb0efdf0dca3d6cbbefe34eefd4ab14"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x0b367aaf06c77e7ffb72914b17f3a1c128fa10088fc87d0447d3a06f35e7b6b7"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x328690bd56c9309a011ae4ffef31751e57cdbc47602964c20852610bb336b3ee"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xef529f7a57239e9ee8009520cfe0d9afc88f27c7b4aa52ebed17188ac1af0ca9"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xdbf1e588dfa69448c17d226642c39592622f39643c924392e0e85dc2bd0f2683"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x5876cacbdc79093e8ad561816a69169d2e3aeaff60138342771b7cfc6979b42e"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x46ca415c6da9e37cd3b19d9156f2579b3de95182aa464e4e6cfbac031017534f"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x4ff916e48b60d9dbbb18835a7bfa733e13a38b50f94b88525c9c0d13d25bfab4"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xbb9a187db994a0926a05ad3d50a95f99cd5d6419c91acd9b0e3b3bd94f0142bd"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xee00329270f60ff447c42d9373c951a3ed752a8bafb3ff931cd437a889b0bb35"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xfc07160e8f1949db724880624894ff2aa6b4dd1dc65c12bd9d7ef415223cafdf"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x21f0053523500f90c07fe27da78233505e71bdd68285f5d9b7b55b1a48c22c6b"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x63b7c6026f3743ec54b63db803600cc25e56f4399f14757d821a5b5efa4ce776"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xcc8005f21f1b75c3a936384ed239152f71c827d19f0401eeff994c1810a7e1a6"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xf9a1740d33928dcb4ade036669eaeb3524eaeebb355a8855ac197aa93760c5e0"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xac2d834dc79099daca4efc7b7bd7854e35747a6b9ef06b5c7d70c46bfd58046c"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x21ee1dcd791fab77f317cdc8b2e649bfd3b233b95cc73354f0a258d4cb1d10b4"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x2e0ab50b9bd1a4143f9861ecb8025fd3c8a244b59c69d7b26d82952a304cfaa9"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x369ef128387b6a167a0b7c1bce68415239199e05198b589013e0100cda4c541e"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xf7ff01ec3f2b1c7892dca09e2f20d236470ba9b880922017ad0c510d79fc0940"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xd16325d6ce8abd5640c9d9da778d54e5fabb2ab52ad348581c333049bd4409de"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xa8e8f7c225f156f42cc8f3aa29d0dc8f42f1c51c4918818c1c72d1891b7f38df"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x33a02eed7ccb0a3634e29bddcb2b427500b50971ddd44211396723f8d8133d0a"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x3fed7c30a9e211fbec5329c4f0c45c3a7aeb7b2e99b28d5efb94811f8002f27d"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x095d5f133fcffe77329631b1a5742a3fb548d61adbb6b67dc54869bd6e5cb786"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x01bc48e8ff8d1f9c5b94411bcbb3a6b7eec7a02b05218893914a9b6aa01cc829"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xb236032685fd4e1265eb15d966b9ffa431c3c7ca91df0896aa4a88aa20dee221"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xb96cda31b68db1f1d454a2b7d61879add0ad11cbb6a7b0e652f12c98d306974a"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x5bb2c8bcdd4fd0f0dc1a0f5abe27bf9d018eb25e684e99fa48349cc8bc97e4cf"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x84c7c1fce2cc6ddc30b2a3e37e9a11b9582cff2e98627a186972e1ded9654238"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x510a19755452417b96be8ac1a811f35693f5c1311a7b0c68eab51d387bbc8054"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xf34e8e8c4b17ead0add1bfafeb5acfcbe69fc7127edd942cdb27ce6412be5bbc"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x51a9e6aaa5731b08cbb60827da3805bb0111873ae31b1c4f838719a813da1f02"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xcfcf05e831afd424b43b5a8953c718705d5cc1aa4e120631726a906749d63887"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xe6775d5039c2d6570d62746c78877b074106a74a9fc00391c09de603b6688a4c"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x65e7ee9681f8756509bbaa7bd3c01a62d653d3181972c15ae6306641c57cee42"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xf5f40aec2c61441157bc502918b920666d18e144f55b69750cfede49bfb3e2fb"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xc8f0f60d20615d6af89e59b466d0ca616f6564c1db921546a6808c9ea303a360"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xce967f6e543c60f6fd036834b0cdf27f203dbb2995c50ba2872105e25453fe77"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x00b726127115164ab6276adfa8dbf47602fbe1788cc583b7ba6c5e3bb286d591"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x352219509df4ca94cd8f053cc921cdf90642a60230effee1499c99dd2462f799"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x47052598ba712ed172ccd3bb4e634dd4b3bc1906572e4feda01935bbf3cedd17"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x521563c240cc06b57ab1bdf53c397e943d604e83863c790e63b2ad52810da69e"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xd3788e729c9637958ece1c3a7dc4758906d6dc23b5e87c13f3f0a69429a0a055"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x1210f21f584c77e883bc42d6516281db58439383bd0b32e0a546c7e1302cfb12"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x0f5bbaea47e5bbd7a2e15ead900cd8127cae5d0c8d6753adef7cc9f9d775aca3"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x48c16433451e8162a631a1a166a5300cd165b6b6866bec5f2444e425462f29c8"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xd0cc283878f984d2ada2ae2ad284dcbf830a649c6efff203ab766fb649a8667b"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x352b801a34ee4995f8955fdedf0adfeb97cb4e386a9beceeb6c2353945a774c0"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x0af36a2c28fdc2684f0c12dc670ce64ade745c791a21f90c6aa5499397ae54dc"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x13217d17709d4e85723e0b116332a10d65bef0b0ef37913f54a0840d44dcad41"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x6b582510748d3628a69d51da5df8ea64f719dd2c63cabf0a693a80042c5e4b78"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x5f4cc3c0e10f5deefa5b727c4bbc4ff7becb2367b42a9573ec7f956ec4f10fdc"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xdd4a084fd7ebb055aa1fcd076ab7c30bea1a4537c84c46387684c5d2dce2cb95"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x459f4fd96d5b86445149097aa4c27d5f939b569657755b31cf347c438b83b01e"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x19762930d959aff027c3c176b691d619b5758ce7e7d7083c51106a394fd61f82"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xb32b63ba062e2dd1bc57b933b41e0c443429ad59ccb8dc308ced74c9178e042a"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xe586a5476d3ce894de5b1c3fed1235e71b853f13dc305810b99acd7fe5bc53f5"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x1863c05dd115a6de3e8bd46e9ec6febebb7c16245f45d595825c66ea059ab801"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x2d74136f2a4c2aca7410d1eb42be10505195d7ea16fabbbda72e899d84c486d5"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xcb79f2ad56917b1624fcce5025f94ed527755e51e3af0b1a45c410fb484ea40c"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x1000b768cc14960137686854d490cd3937a30b6e075aa9a9ad739cda75394003"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x2663ee83b7d2e1ccb8a9f163ac1d88c87071c01931fa50fa72ca30f4b7097e4b"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x2f9ed26bc48d395af1cc0354616cc87e9c4a4168bf1e5ef8b6d53c9955079057"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x3d3302f4455c0c5960b266f6ba36ca0df93a122f0b07f8f26d6a049c691dc93d"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xa8429231d000aa71778ec30d595c4bc0248c2dc2a87b383677314320b87f3f4c"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x67ba6a38dc9c4d4a6747a47e532a9477013c3590e9d3eacb3a0f1b9bedac0158"
+    },
+    {
+      "step": "Invoice approved",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x0d64e5599eec3356c63f35e8a2d55d64aaf9e9bd2265b6480bd62ebc0862e424"
+    },
+    {
+      "step": "HSP payment recorded",
+      "url": "https://testnet-explorer.hskchain.net/tx/0xc4a1bcd0b44b8ea2078c4a46ea13209150dff2c49dc65f80be9e96f68a477742"
+    },
+    {
+      "step": "Supplier confirmed delivery",
+      "url": "https://testnet-explorer.hskchain.net/tx/0x3c061185a9d9a140c56fb062c77400a5f03d4414f479b3dd241246d68cbb2d79"
     }
   ],
   "done": [
@@ -64,6 +388,38 @@
     "0xb09eb43e883020e1df84ed28f9c783c940914ad513c5d540da22707573d903c1",
     "0x2080086e01cc9481bc8f23d80deed5302d4329af17d71c7133fa3c654642a570",
     "0x2af46c2c59062f7461c4d086d08430054b935b7d70048329358d513387e3bcbf",
-    "0x23da665c2687179579cabb75349ef925f88cdea4f0ef9df3d6a47cdc1f41a483"
+    "0x23da665c2687179579cabb75349ef925f88cdea4f0ef9df3d6a47cdc1f41a483",
+    "0xc09b255862ea8acc71046aa4dd6e6e07ff170dffd49ba4b6688c7e1eef86aacf",
+    "0xbdd335860486af04228dd715273d6abeb18295c048502e96eed164f837417e85",
+    "0x6075463fcec8c45dfcc521d405ae93bc8766a44674b4dd90e7394dcd5bc32f8b",
+    "0xfc90698b0eedb643f097c22f83892fba6800ef871c1919ee422624adfb941edb",
+    "0x6d79d03f5807ae98814f29493d46cdde6fc3bf479655c4581eaabec09c08fcff",
+    "0x4a8c6fb35327832faab1bd2cfa2e74344b5468e5c3582e4639ace969a8da2407",
+    "0x34cf475ddcf04c58d068b90214398878f77b3c9233b26ecb033f9b0a15f77a4b",
+    "0xe9a48219652ee022ffcaf18d6b0bc2a868f4de2cc9896fa072d3ed5c4981e37f",
+    "0x71d1375dbf5a16feb468cfc94591b7f6c0f07609e1f1259f24310d180f7f9dae",
+    "0x8babd94b2b7c37ddbc9d03f25a01f34673ba3a0cc45f71f1f2e49fb2aedd9a0d",
+    "0x3080e46744383898d630738edf18135b4c7facffb9378746b99b0cf085d1317d",
+    "0xda02783b7b762f8700121de2969edff5de586a78b5ce9e962b3f0821cb410e50",
+    "0xcae20b0b9405d11d895c0eeae75e0c1f004ecbded7246ef05fa02e9081fb3ee9",
+    "0xb7546b5841c2a6e9c4a46a231332bd8ab143a7d2751ad69cb1124fffd355d2e6",
+    "0x13b94d6df9b7d2634c53f7c2284300292b765f17fe150b84c4e56b961c0e3350",
+    "0x5555673df290f8280ebb2d21e7017a5e84485463b8ed62b64cb1d8cbd2baf73e",
+    "0x844deaaa7b0c0be94429be8daca2fc62e24452adc7799444f1d4c526d1d065de",
+    "0xdc4275c54157f69aaea18d9d27980b5e1609ee6558d34a13d9155cbe83d6a262",
+    "0xc567ef1a725c021bab3913bbbe04a1e76c8df54d21ec9807ef9659eaeabcc51d",
+    "0xa81c958371a1d007cf294784497049e171bfe62884dcf4c081a48e5152f9c513",
+    "0xc9f24b7217b656ca3eda24a66f5fb5d82ce9f4393f54b3516250b1c637f3d55b",
+    "0xe63eec7b0d036dabddd6815fb63a5f306636ff95eb6a052b3c1ce3e7ebf084b5",
+    "0xc63fec2696612179ea6c23818b2764e0ff5ba463c38205836ebce8da0f0e2f3a",
+    "0x681aa1a781ba5cfa5b3e9e199bb4608b35a511c3a071315f99891f032894c410",
+    "0xafd117e3232177f3c55b5398c450fc906a5e6fde138b5db41d216b5438ad6583",
+    "0x035359f7ac85b7342b2274f2ba7e00ba6e3f3a83ad93ee26a1229eb54fe5a956",
+    "0x56235389d3e21ad03d40e17309cad30f996eb91a64570faa3b1f08e0667d76ac",
+    "0xba7665797112c81f751de84390dfe1d86f10df31c6863f97d9cc70d80913226b",
+    "0x1148cdb1c5b7cf2ff6cce3617334aa770ba8e46977501f356d5f11f204779c40",
+    "0x36717c92782962a194f1f33f9e33f4de04fbc268f3cc5f1da2338327f6888fdd",
+    "0x88aa5263647be0fec590045686bff59b2a7889addefd49dad6fa798f81becbae",
+    "0xeb8834f05967922fb17ef291c49d01c949562c24a809e469f3513787c40c6612"
   ]
 }

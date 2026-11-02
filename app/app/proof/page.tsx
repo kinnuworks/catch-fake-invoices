@@ -79,7 +79,7 @@ export default function Proof() {
           {realRuns.length > 0 && (
             <>
               <h2 style={{ fontSize: 28, margin: "56px 0 16px" }}>Real payments through HSP</h2>
-              <p className="t-small" style={{ marginBottom: 16, maxWidth: 680 }}>{realRuns.length} payments we ran ourselves on test networks, with our own wallets and test tokens. They aren't outside customers.</p>
+              <p className="t-small" style={{ marginBottom: 16, maxWidth: 680 }}>{realRuns.length} payments we ran ourselves on test networks, with our own wallets and test tokens. They aren't outside customers. One more payment <a href="https://sepolia.etherscan.io/tx/0x3449092e0c19ef1acaa37e5159e3723f50d717ac9133bb34db81e2347961c955" style={{ textDecoration: "underline" }}>reached the chain</a>, but our connection dropped before delivery was logged, so we don't count it.</p>
               {realRuns[0]?.timeline && (
                 <>
                   <h3 style={{ fontSize: 20, marginBottom: 12 }}>One payment, step by step</h3>
