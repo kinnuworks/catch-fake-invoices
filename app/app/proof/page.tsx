@@ -3,6 +3,7 @@ import testset from "../../data/testset.json";
 import runs from "../../data/runs.json";
 import ledger from "../../data/ledger.json";
 import mainnet from "../../data/ledger-mainnet.json";
+import direct from "../../data/mainnet-direct.json";
 import tough from "../../data/testset-tough.json";
 import retest from "../../data/testset-tough-retest.json";
 import { Logo } from "../logo";
@@ -44,8 +45,9 @@ export default function Proof() {
             <li><b className="done">Working</b><span>A <a href="/api/supplier/invoice" style={{ textDecoration: "underline" }}>public supplier agent</a> that signs invoices, using a demo key with no funds.</span></li>
             <li>{realRuns.length ? <b className="done">Working</b> : <b className="todo">Not yet</b>}<span>{realRuns.length ? "Real payments through HSP, listed below." : "A real payment through HSP. The payment sequence is written and has only run against a test stand-in."}</span></li>
             <li><b className="done">Working</b><span>The record contract on {ledger.network}, with its source verified. <a href={ledger.contract} style={{ textDecoration: "underline" }}>See it</a>.</span></li>
-            <li><b className="done">Working</b><span>The same contract on {mainnet.network}, source verified, holding {mainnet.links.filter((l) => l.step === "HSP payment recorded").length} payments and {mainnet.links.filter((l) => l.step === "Attack stopped").length} stopped attacks. <a href={mainnet.contract} style={{ textDecoration: "underline" }}>See it</a>. It only records decisions: no tokens move on mainnet.</span></li>
-            <li><b className="todo">Not yet</b><span>A payment on mainnet. HSP's live networks are all test networks, so the payments use test USDC on Ethereum Sepolia.</span></li>
+            <li><b className="done">Working</b><span>The same contract on {mainnet.network}, source verified, holding {mainnet.links.filter((l) => l.step === "HSP payment recorded").length} payments and {mainnet.links.filter((l) => l.step === "Attack stopped").length} stopped attacks. <a href={mainnet.contract} style={{ textDecoration: "underline" }}>See it</a>. The contract itself only records and holds no tokens.</span></li>
+            <li><b className="done">Working</b><span>{direct.payments.length} real HSK payments on HSK Chain mainnet, after the same checks, listed below. They go straight to the supplier wallets, without HSP.</span></li>
+            <li><b className="todo">Not yet</b><span>A payment through HSP on mainnet. HSP's live networks are all test networks, so those payments use test USDC on Ethereum Sepolia.</span></li>
           </ul>
 
           <h2 style={{ fontSize: 28, marginBottom: 8 }}>Test results</h2>
@@ -102,6 +104,14 @@ export default function Proof() {
                   </tbody>
                 </table>
               </div>
+              <h2 style={{ fontSize: 28, margin: "40px 0 16px" }}>Real HSK payments on mainnet</h2>
+              <p className="t-small" style={{ marginBottom: 16, maxWidth: 680 }}>Small payments from our own wallet to our 3 supplier wallets. The invoice passed the checks, we approved it, the supplier's agent read the payment on-chain, and all of it was recorded.</p>
+              <ul>
+                {direct.payments.map((p) => (
+                  <li key={p.txUrl}><a href={p.txUrl} style={{ textDecoration: "underline" }}>{p.amount}: {p.label}</a></li>
+                ))}
+              </ul>
+              <p className="t-small" style={{ margin: "16px 0", maxWidth: 680 }}>Attacks stopped and recorded on mainnet, beyond the swapped wallet: {direct.stops.map((s, i) => <span key={s.url}>{i ? ", " : ""}<a href={s.url} style={{ textDecoration: "underline" }}>{s.label.toLowerCase()}</a></span>)}.</p>
               <h2 style={{ fontSize: 28, margin: "40px 0 16px" }}>The record on {mainnet.network}</h2>
               <ul>
                 {mainnet.links.map((l) => (

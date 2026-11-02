@@ -33,7 +33,10 @@ export function ledger(network: keyof typeof NETWORKS, buyer: LocalAccount) {
 
   return {
     net,
-    async recordPaid(run: { invoiceHash: Hex; amountUsdCents: bigint; chainId: bigint; txHash: Hex; paymentRequestId: string; deliveryHash: Hex }, supplier: LocalAccount) {
+    reader,
+    wallet,
+    settled,
+    async recordPaid(run: { invoiceHash: Hex; amountUsdCents: bigint; chainId: bigint; txHash: Hex; paymentRequestId: string; deliveryHash: Hex }, supplier: LocalAccount, paidStep = "HSP payment recorded") {
       if ((await reader.getBalance({ address: supplier.address })) < parseEther(net.gasFloor)) {
         await settled(await wallet(buyer).sendTransaction({ to: supplier.address, value: parseEther(net.gasTopUp) }), "gas");
       }
@@ -43,7 +46,7 @@ export function ledger(network: keyof typeof NETWORKS, buyer: LocalAccount) {
         entries.push(await settled(await wallet(buyer).writeContract({ ...base, functionName: "approve", args: [run.invoiceHash, supplier.address, run.amountUsdCents] }), "Invoice approved"));
       }
       if ((await status()) < 3) {
-        entries.push(await settled(await wallet(buyer).writeContract({ ...base, functionName: "recordPayment", args: [run.invoiceHash, run.chainId, run.txHash, run.paymentRequestId] }), "HSP payment recorded"));
+        entries.push(await settled(await wallet(buyer).writeContract({ ...base, functionName: "recordPayment", args: [run.invoiceHash, run.chainId, run.txHash, run.paymentRequestId] }), paidStep));
       }
       if ((await status()) < 4) {
         entries.push(await settled(await wallet(supplier).writeContract({ ...base, functionName: "confirmDelivery", args: [buyer.address, run.invoiceHash, run.deliveryHash] }), "Supplier confirmed delivery"));

@@ -1,0 +1,137 @@
+{
+  "payments": [
+    {
+      "label": "Market summary",
+      "amount": "0.2 HSK",
+      "supplier": "0x69B86943a43336dc6D0c2e45486bDdB78E952C00",
+      "txUrl": "https://hsk.blockscout.com/tx/0x7c09407c5f57befd35f9d58c5d51456b485dfc65361cf036455e8102f277e207",
+      "entries": [
+        {
+          "step": "Invoice approved",
+          "url": "https://hsk.blockscout.com/tx/0x413d613af0b1e27f885470fc4c769425b4635c0ffbf2d43450b034564dbfe39e"
+        },
+        {
+          "step": "HSK payment recorded",
+          "url": "https://hsk.blockscout.com/tx/0x991e6bbcf530e865e055348a1e7701a1d9fa8492d598a239610540a7726d3fbf"
+        },
+        {
+          "step": "Supplier confirmed delivery",
+          "url": "https://hsk.blockscout.com/tx/0xca11080454e7e73d5f3ad53bb9b8a584d886008885434c1751e985ec58b3a1b7"
+        }
+      ]
+    },
+    {
+      "label": "Translation of a contract",
+      "amount": "0.2 HSK",
+      "supplier": "0xe71935f1eE00b1d80185cf5e6d32e49C1AC8C72D",
+      "txUrl": "https://hsk.blockscout.com/tx/0xb7094f019d92e825d98a90b6845e50b09b8de95d558713c7e556e83f20aef4e3",
+      "entries": [
+        {
+          "step": "Invoice approved",
+          "url": "https://hsk.blockscout.com/tx/0xfcf8c10502390cd382bc08bcc70950437e96eaccc9d02ffd821eaba0523c9620"
+        },
+        {
+          "step": "HSK payment recorded",
+          "url": "https://hsk.blockscout.com/tx/0x3009dff8d2d00cb08f37db749550fc5d1f0cea95b62979b4e84bb0c5124450d5"
+        },
+        {
+          "step": "Supplier confirmed delivery",
+          "url": "https://hsk.blockscout.com/tx/0xf08822f57bca871830c474dcf5beee39c61388b75197fc8a23d4cfebffdc32dc"
+        }
+      ]
+    },
+    {
+      "label": "Security review of one file",
+      "amount": "0.2 HSK",
+      "supplier": "0x06e2cb8b2a7b97a2cdcFf902e16Ab3B3b6135d68",
+      "txUrl": "https://hsk.blockscout.com/tx/0xf039b7443846156554cf9ade50f25f8acd31cec5ff9cb5383969a6446416c68d",
+      "entries": [
+        {
+          "step": "Invoice approved",
+          "url": "https://hsk.blockscout.com/tx/0x07ff05189765d50702209e8572aef85e1bc0811308ca4fd326b954f71b3e86b7"
+        },
+        {
+          "step": "HSK payment recorded",
+          "url": "https://hsk.blockscout.com/tx/0xe266b624ca4b998c7cf6eed0475f38ead98d9002bc8782b19fc17fdc810f648c"
+        },
+        {
+          "step": "Supplier confirmed delivery",
+          "url": "https://hsk.blockscout.com/tx/0xf89b6ac46f8f97f26d0a119eb3135499e612b648a8ca47b4b0904a11816e3f1d"
+        }
+      ]
+    },
+    {
+      "label": "Dataset cleanup",
+      "amount": "0.2 HSK",
+      "supplier": "0x69B86943a43336dc6D0c2e45486bDdB78E952C00",
+      "txUrl": "https://hsk.blockscout.com/tx/0x3beb0e9b67dbff238e6944e32e7e775671f03b556b8db761f8e33f76d1474af6",
+      "entries": [
+        {
+          "step": "Invoice approved",
+          "url": "https://hsk.blockscout.com/tx/0xcb71a23b1672714bb6e040e237550988290bf1555bd645e821a8e7dacf1882d6"
+        },
+        {
+          "step": "HSK payment recorded",
+          "url": "https://hsk.blockscout.com/tx/0x47aa3008ce37a40d0011a5303b96ccc7f9b3fadcff62db7fe4d7310ab82df3f5"
+        },
+        {
+          "step": "Supplier confirmed delivery",
+          "url": "https://hsk.blockscout.com/tx/0x01d3a12733ff6952241aaa202f29c9e2a0a37f88c080cf0213580dcad4f9e80b"
+        }
+      ]
+    },
+    {
+      "label": "Price feed for one day",
+      "amount": "0.2 HSK",
+      "supplier": "0xe71935f1eE00b1d80185cf5e6d32e49C1AC8C72D",
+      "txUrl": "https://hsk.blockscout.com/tx/0xcb3606d3932fe2a043adc2e1fb96d91b0924c99ad835fc883afffe586bcbf854",
+      "entries": [
+        {
+          "step": "Invoice approved",
+          "url": "https://hsk.blockscout.com/tx/0x94f376205e52e3cd3b5f773768e6d9233d599865e54466731c4f5008571510ff"
+        },
+        {
+          "step": "HSK payment recorded",
+          "url": "https://hsk.blockscout.com/tx/0xd8932411fa268050eb9135635f87621277d491692a63781fc6acbbec05259cf8"
+        },
+        {
+          "step": "Supplier confirmed delivery",
+          "url": "https://hsk.blockscout.com/tx/0xbccaf532d40a10fe3e6e1c180dfb08eddd1b28d8f64ea143456720adf1444662"
+        }
+      ]
+    }
+  ],
+  "stops": [
+    {
+      "label": "Raised amount",
+      "reasons": [
+        "WRONG_AMOUNT"
+      ],
+      "url": "https://hsk.blockscout.com/tx/0xffabfa2f107e51b5a0318db632728ed0f00a5fc1ff3c178cb5ae59db10018df6"
+    },
+    {
+      "label": "Forged supplier",
+      "reasons": [
+        "BAD_SIGNATURE"
+      ],
+      "url": "https://hsk.blockscout.com/tx/0xe35f79eb83109cb434d0957a13f3afdc72e18d90a4bd2f0554e8a06787820264"
+    },
+    {
+      "label": "Duplicate invoice",
+      "reasons": [
+        "DUPLICATE"
+      ],
+      "url": "https://hsk.blockscout.com/tx/0x0c495c8ee78272b00bc27899ba509da32cb8159825fd3a41b24421ef762ebc88"
+    }
+  ],
+  "done": [
+    "pay-0",
+    "pay-1",
+    "pay-2",
+    "pay-3",
+    "pay-4",
+    "Raised amount",
+    "Forged supplier",
+    "Duplicate invoice"
+  ]
+}

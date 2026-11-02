@@ -140,7 +140,7 @@ export default function Home() {
               <div className="tile" key={l.url}><span className="icon-tile step-no">{`0${i + 1}`}</span><div><p className="t-title">{l.step}</p><p>Written to the record contract on {ledger.network}. <a href={l.url} style={{ textDecoration: "underline" }}>See the entry</a></p></div></div>
             ))}
           </div>
-          <p className="t-small" style={{ marginTop: 24 }}>The payments use test USDC on Ethereum Sepolia, because HSP's live networks are all test networks. The record is on HSK Chain mainnet and moves no tokens. <a href={ledger.contract} style={{ textDecoration: "underline" }}>Contract source</a> · <a href="/proof" style={{ textDecoration: "underline" }}>All {(runs as Run[]).length} payments, and everything that doesn't work yet</a></p>
+          <p className="t-small" style={{ marginTop: 24 }}>HSP payments use test USDC on Ethereum Sepolia, because HSP's live networks are all test networks. The record is on HSK Chain mainnet, alongside 5 real HSK payments made without HSP. <a href={ledger.contract} style={{ textDecoration: "underline" }}>Contract source</a> · <a href="/proof" style={{ textDecoration: "underline" }}>All {(runs as Run[]).length} payments, and everything that doesn't work yet</a></p>
         </div>
       </section>
 
