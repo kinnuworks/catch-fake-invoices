@@ -2,11 +2,13 @@
 
 Catch fake invoices before paying.
 
-A supplier's agent sends a signed invoice, and InvoiceGuard, your agent, checks it before any money moves. If you approve, your agent pays through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did.
+InvoiceGuard is an AI agent that checks a supplier's invoice before any money moves, then pays through HSP once a person approves.
 
-The two agents don't have to trust each other: HSP settles the payment and either side can check it. A small contract on HSK Chain mainnet records each decision. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.
+It needs HSP and HSK Chain so that neither agent has to trust the other: the supplier's agent asks HSP itself whether the money arrived before it delivers, and each decision goes on a public record on HSK Chain mainnet.
 
-Video: https://youtu.be/I7WhzoVGQ6w
+![An invoice with a swapped wallet and hidden instructions, stopped before payment](docs/core-loop.gif)
+
+**Live:** https://useinvoiceguard.vercel.app · **Video:** https://youtu.be/I7WhzoVGQ6w · **Proof:** https://useinvoiceguard.vercel.app/proof
 
 ## Try it in 30 seconds
 
@@ -15,6 +17,10 @@ Video: https://youtu.be/I7WhzoVGQ6w
 3. Under "Check a PDF invoice", press "Invoice with hidden instructions". White text on that page tells any AI agent to approve the payment. The agent reports it and approves nothing.
 
 No wallet or signup is needed for these steps. Fixed rules answer first, then an AI read adds anything they missed, within a limit per visitor. To run it yourself, add `ANTHROPIC_API_KEY` to `app/.env` and run `pnpm install && pnpm dev` in `app/`.
+
+## How it works
+
+A supplier's agent sends a signed invoice, and InvoiceGuard, your agent, checks it before any money moves. If you approve, your agent pays through HSP, HashKey's payment gateway. The supplier's agent then asks HSP whether the money reached its wallet, and delivers only if it did. If a supplier disputes a stopped payment, or an auditor asks why one went out, anyone can check the record without trusting the buyer's own logs.
 
 ## For other agents
 
